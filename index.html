@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aseem Jain — Coming Soon</title>
+  <meta name="description" content="Aseem Jain's website is coming soon.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;600&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg: #0e0f13; --fg: #f4f4f5; --muted: #8b8d98; --accent: #7c9cff; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      background: radial-gradient(circle at 50% 35%, #1b1e2b 0%, var(--bg) 65%);
+      color: var(--fg);
+      font-family: "Inter", system-ui, -apple-system, sans-serif;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center; padding: 24px;
+    }
+    h1 {
+      font-weight: 600;
+      font-size: clamp(2.5rem, 9vw, 5.5rem);
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+    }
+    .line { width: 48px; height: 3px; background: var(--accent); margin: 28px auto; border-radius: 2px; }
+    p {
+      font-weight: 300;
+      font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+      color: var(--muted);
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+    }
+    footer { position: fixed; bottom: 20px; left: 0; right: 0; font-size: 0.8rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Aseem Jain</h1>
+    <div class="line"></div>
+    <p>Coming Soon</p>
+  </main>
+  <footer>&copy; <span id="y"></span> Aseem Jain</footer>
+  <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+</body>
+</html>
