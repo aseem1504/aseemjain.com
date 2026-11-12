@@ -8,7 +8,7 @@ const bars = [10, 7, 7, 9, 10, 7, 7, 9, 10, 4, 4, 5, 5, 7, 7, 9];
   <div class="wrap flex flex-col items-center gap-6 md:flex-row md:justify-between">
     <p class="text-sm text-muted">© {new Date().getFullYear()} Aseem Jain</p>
 
-    <svg class="wave h-10 w-48 text-accent" viewBox="0 0 160 40" fill="currentColor" aria-hidden="true">
+    <svg class="wave h-10 w-48 text-accent-ink" viewBox="0 0 160 40" fill="currentColor" aria-hidden="true">
       {bars.map((h, i) => (
         <rect class="bar" x={i * 10 + 2} y={20 - h * 1.8} width="5" height={h * 3.6} rx="2.5" style={`animation-delay:${i * 90}ms`} />
       ))}

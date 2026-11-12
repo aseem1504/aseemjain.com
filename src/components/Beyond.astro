@@ -14,7 +14,7 @@ const renderedPoems = await Promise.all(poems.map(async (p) => ({ p, Content: (a
 const beats = [10, 7, 7, 9, 10, 7, 7, 9, 10, 4, 4, 5, 5, 7, 7, 9];
 ---
 
-<section id="beyond" class="bg-teal-wash py-24 md:py-36" aria-labelledby="beyond-title">
+<section id="beyond" class="sheet bg-sun-wash pb-24 pt-20 md:pb-36 md:pt-28" aria-labelledby="beyond-title">
   <div class="wrap">
     <p class="eyebrow mb-3" data-reveal>Beyond work</p>
     <h2 id="beyond-title" class="display text-[clamp(2.6rem,6.5vw,5.5rem)]" data-split>Off the clock.</h2>
@@ -52,7 +52,7 @@ const beats = [10, 7, 7, 9, 10, 7, 7, 9, 10, 4, 4, 5, 5, 7, 7, 9];
         ) : (
           <div class="grid aspect-video place-items-center rounded-2xl border border-line bg-card p-6 text-center">
             <div>
-              <svg class="mx-auto mb-5 h-14 w-52 text-accent" viewBox="0 0 160 40" fill="currentColor" aria-hidden="true">
+              <svg class="mx-auto mb-5 h-14 w-52 text-accent-ink" viewBox="0 0 160 40" fill="currentColor" aria-hidden="true">
                 {beats.map((h, i) => <rect class="beat" x={i * 10 + 2} y={20 - h * 1.8} width="5" height={h * 3.6} rx="2.5" style={`animation-delay:${i * 90}ms`} />)}
               </svg>
               <p class="display text-2xl">Teental, 16 beats</p>

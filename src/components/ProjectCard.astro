@@ -1,6 +1,5 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import PipelineDiagram from './PipelineDiagram.astro';
 import ResultVisual from './ResultVisual.astro';
 
 interface Props { project: CollectionEntry<'projects'>; index: number }
@@ -11,43 +10,48 @@ const repoUrl = d.repo ? `https://github.com/aseem1504/${d.repo}` : undefined;
 ---
 
 {d.inProgress ? (
-  <article class="rounded-3xl border border-dashed border-line p-6 md:p-8" data-reveal>
-    <div class="flex flex-wrap items-baseline gap-x-4 gap-y-2">
+  <article class="flex flex-col rounded-[1.75rem] border border-dashed border-ink/30 p-6" data-reveal>
+    <div class="flex items-baseline gap-3">
       <span class="text-sm tabular-nums text-muted">{num}</span>
-      <h3 class="display text-2xl md:text-3xl">{d.title}</h3>
-      <span class="rounded-full border border-line px-2.5 py-0.5 text-xs text-muted">In progress</span>
+      <h3 class="display text-2xl md:text-[1.9rem]">{d.title}</h3>
     </div>
-    <p class="mt-3 max-w-xl text-muted">Building now. Coming soon.</p>
-    <div class="mt-4 flex flex-wrap gap-2">{d.tags.map((t) => <span class="rounded-full border border-line px-2.5 py-0.5 text-xs text-muted">{t}</span>)}</div>
+    <p class="mt-3 text-muted">Building now. Coming soon.</p>
+    <ul class="mt-4 flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted">{d.tags.map((t) => <li>{t}</li>)}</ul>
     {/* TODO(aseem): add the repo link when it is ready (repo: <name> in src/content/projects/ai-agent-in-progress.md). */}
   </article>
 ) : (
-  <article class="project-card border-t-2 border-ink pt-8" data-reveal>
-    <header class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-3">
-      <div class="flex items-baseline gap-4">
-        <span class="text-sm tabular-nums text-muted">{num}</span>
-        <h3 class="display text-2xl md:text-4xl">{d.title}</h3>
-      </div>
-      <ul class="flex flex-wrap gap-2">{d.tags.map((t) => <li class="rounded-full border border-line px-2.5 py-0.5 text-xs text-muted">{t}</li>)}</ul>
-    </header>
-
-    <div class="mt-7 grid gap-8 md:grid-cols-2 md:gap-10">
-      <dl class="grid content-start gap-4 text-[0.97rem]">
-        <div><dt class="eyebrow mb-1">The problem</dt><dd class="text-ink/85">{d.problem}</dd></div>
-        <div><dt class="eyebrow mb-1">What I built</dt><dd class="text-ink/85">{d.built}</dd></div>
-        <div><dt class="eyebrow mb-1">The result</dt><dd class="font-medium">{d.result}</dd></div>
-      </dl>
-      {d.visual && <ResultVisual visual={d.visual} />}
+  <article class="project-card pc" data-reveal>
+    <div class="flex items-baseline gap-3">
+      <span class="text-sm tabular-nums text-muted">{num}</span>
+      <h3 class="display text-2xl md:text-[1.9rem]">{d.title}</h3>
     </div>
+    <ul class="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted">{d.tags.map((t) => <li>{t}</li>)}</ul>
 
-    <div class="mt-8 border-t border-line pt-6">
-      <p class="mb-3 text-xs text-muted">How it works. Hover to see the flow.</p>
-      <PipelineDiagram steps={d.steps} name={d.title} />
+    <p class="mt-4 font-medium leading-snug">{d.result}</p>
+    <p class="mt-2 text-[0.9rem] leading-relaxed text-muted"><b class="font-semibold text-ink">Problem.</b>{' '}{d.problem}{' '}<b class="font-semibold text-ink">Built.</b>{' '}{d.built}</p>
+
+    {d.visual && <div class="mt-5"><ResultVisual visual={d.visual} compact /></div>}
+
+    <ol class="mini-flow mt-5" aria-label={`How ${d.title} works`}>
+      {d.steps.map((s, i) => <li style={`--i:${i}`}>{s.label}</li>)}
+    </ol>
+
+    <div class="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
+      <a class="font-semibold text-accent-ink underline decoration-ink/20 underline-offset-4 hover:decoration-accent-ink" href={`/projects/${project.id}`}>Walkthrough →</a>
+      {repoUrl && <a class="font-semibold underline decoration-ink/20 underline-offset-4 hover:decoration-ink" href={repoUrl} target="_blank" rel="noopener">View code ↗</a>}
     </div>
-
-    <footer class="mt-6 flex flex-wrap items-center gap-3">
-      <a class="btn btn-primary" href={`/projects/${project.id}`}>Read the walkthrough</a>
-      {repoUrl && <a class="btn" href={repoUrl} target="_blank" rel="noopener">View code ↗</a>}
-    </footer>
   </article>
 )}
+
+<style>
+  .pc { display: flex; flex-direction: column; border-top: 2px solid var(--ink); padding-top: 1.25rem; }
+  .mini-flow { display: flex; flex-wrap: wrap; gap: 0.3rem 0.15rem; font-size: 0.72rem; }
+  .mini-flow li { display: inline-flex; align-items: center; padding: 0.22rem 0.6rem; border-radius: 999px; background: color-mix(in srgb, var(--accent) 34%, transparent); color: var(--ink); }
+  .mini-flow li:not(:last-child)::after { content: "›"; margin-left: 0.55rem; margin-right: -0.2rem; color: var(--muted); font-size: 0.9rem; }
+  .mini-flow li:not(:last-child) { padding-right: 0.3rem; background: none; }
+  .mini-flow li:not(:last-child) { background: color-mix(in srgb, var(--accent) 34%, transparent); border-radius: 999px 0 0 999px; }
+  /* On hover the steps light up in order, like the data moving through. */
+  @keyframes glow { 0%, 100% { background-color: color-mix(in srgb, var(--accent) 34%, transparent); } 40% { background-color: var(--accent); } }
+  .project-card:hover .mini-flow li { animation: glow 1.4s ease-in-out infinite; animation-delay: calc(var(--i) * 140ms); }
+  @media (hover: none), (prefers-reduced-motion: reduce) { .project-card:hover .mini-flow li { animation: none; } }
+</style>

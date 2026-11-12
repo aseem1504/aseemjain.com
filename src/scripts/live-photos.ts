@@ -32,18 +32,23 @@ function stop(v: HTMLVideoElement) {
 }
 
 if (!saveData) {
+  // The hero clip plays by itself, once the page has finished loading so it never delays the photo.
+  const hero = videos.filter((v) => v.hasAttribute('data-autoplay'));
+  const start = () => hero.forEach((v) => play(v));
+  if (document.readyState === 'complete') start(); else addEventListener('load', start, { once: true });
+
+  // Gallery clips: on hover for mouse users, when mostly in view on phones.
+  const gallery = videos.filter((v) => !v.hasAttribute('data-autoplay'));
   if (matchMedia('(hover: hover)').matches) {
-    // Desktop: play while the pointer is over the tile.
-    videos.forEach((v) => {
+    gallery.forEach((v) => {
       const tile = v.closest('li');
       tile?.addEventListener('pointerenter', () => play(v));
       tile?.addEventListener('pointerleave', () => stop(v));
     });
   } else if ('IntersectionObserver' in window) {
-    // Phones: play when a tile is mostly in view.
     const io = new IntersectionObserver((entries) => {
       entries.forEach((e) => (e.isIntersecting ? play(e.target as HTMLVideoElement) : stop(e.target as HTMLVideoElement)));
     }, { threshold: 0.65 });
-    videos.forEach((v) => io.observe(v));
+    gallery.forEach((v) => io.observe(v));
   }
 }

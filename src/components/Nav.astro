@@ -1,16 +1,17 @@
 ---
 const links = [
+  ['Credentials', '/#credentials'],
+  ['Creative', '/#beyond'],
   ['Work', '/#work'],
   ['Story', '/#story'],
   ['Projects', '/#projects'],
-  ['Beyond work', '/#beyond'],
   ['Contact', '/#contact'],
 ];
 ---
 
 <nav id="nav" class="sticky top-0 z-50 border-b border-transparent bg-paper/85 backdrop-blur" aria-label="Main">
   <div class="wrap flex h-16 items-center justify-between gap-4">
-    <a href="/" class="display text-2xl leading-none" aria-label="Aseem Jain, home">aj<span class="text-accent">.</span></a>
+    <a href="/" class="display text-2xl leading-none" aria-label="Aseem Jain, home">aj<span class="text-sun">.</span></a>
 
     <ul class="hidden items-center gap-7 text-[0.92rem] text-muted md:flex">
       {links.map(([label, href]) => (

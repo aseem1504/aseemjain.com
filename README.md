@@ -24,8 +24,9 @@ All text lives in `src/content/`, so you rarely need to touch a component.
 | A poem | Copy `src/content/poems/_example.md` to `src/content/poems/<name>.md`. The poems block shows up once one exists |
 | A Speaker Series guest | Add an object to `src/content/speakers.json`. Empty fields stay hidden |
 | A code project | Add `src/content/projects/<repo-name>.md`. Copy an existing one. The file name must match the GitHub repo name |
-| The hero photo | Replace `src/assets/photos/hero.jpg` and adjust `object-position` in `src/components/Hero.astro` |
+| The hero photo and its live clip | `src/assets/photos/seaside-lawn.jpg` plus `public/media/live/seaside-lawn.mp4` and `.webm`. Adjust `object-position` in `src/components/Hero.astro` |
 | The tabla video | Set `MUSIC_VIDEO_ID` at the top of `src/components/Beyond.astro` |
+| A logo on a Credentials tile | Save the file as `src/assets/logos/<id>.svg` (or png), where the id is in `src/content/credentials.json`, for example `iima.svg`. Until then a monogram shows |
 | The CV | Replace `public/Aseem_Jain_CV.pdf` |
 | The headline | `src/components/Hero.astro` (options A, B and C are in the comment) |
 | The accent colour | `--accent` and `--accent-ink` in `src/styles/global.css` |

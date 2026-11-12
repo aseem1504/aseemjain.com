@@ -1,12 +1,13 @@
 ---
 import { Picture } from 'astro:assets';
-import hero from '../assets/photos/wide-lawn.jpg';
+import hero from '../assets/photos/seaside-lawn.jpg';
 
 /*
   Headline options (swap by editing the h1 lines below):
   A (live): I build products where money, data and trucks meet.
   B: Engineer by training. Product manager by choice.
   C: 6.5 years making payments, credit and data work for India's truckers.
+  The line under it is the first line of the CV summary, cut to ten words.
 */
 const topics = ['Payments', 'Embedded credit', 'Telematics', 'Data', 'FASTag', 'Healthtech', 'IoT'];
 ---
@@ -14,7 +15,7 @@ const topics = ['Payments', 'Embedded credit', 'Telematics', 'Data', 'FASTag', '
 <section class="relative overflow-hidden pt-10 md:pt-16" aria-labelledby="hero-title">
   <div class="blob" aria-hidden="true"></div>
 
-  <div class="wrap relative grid items-center gap-12 pb-16 md:grid-cols-12 md:gap-8 md:pb-24">
+  <div class="wrap relative grid items-center gap-14 pb-20 md:grid-cols-12 md:gap-8 md:pb-28">
     <div class="md:col-span-8">
       <p class="eyebrow fade-up mb-5">Product manager · IIM Ahmedabad PGPX '27</p>
 
@@ -25,7 +26,7 @@ const topics = ['Payments', 'Embedded credit', 'Telematics', 'Data', 'FASTag', '
       </h1>
 
       <p class="fade-up mt-7 max-w-xl text-lg text-muted md:text-xl" style="--d: 260ms">
-        Product manager. 6.5+ years across fintech, telematics and healthtech. Now at IIM Ahmedabad (PGPX '27).
+        Product Manager with 6.5+ years building and scaling technology-led businesses.
       </p>
 
       <div class="fade-up no-print mt-9 flex flex-wrap gap-3" style="--d: 340ms">
@@ -33,55 +34,69 @@ const topics = ['Payments', 'Embedded credit', 'Telematics', 'Data', 'FASTag', '
         <a class="btn" href="mailto:x26aseemj@iima.ac.in">Email me</a>
         <a class="btn" href="https://www.linkedin.com/in/aseemjain1504" target="_blank" rel="noopener">LinkedIn ↗</a>
       </div>
+
+      <p class="mt-5 hidden text-sm print:block">₹3,600 Cr annual FASTag volume · 1.5M active vehicles · 72% → 87% payment success · 12-person product pod</p>
+
+      <ul class="fade-up print-hide mt-9 flex max-w-xl flex-wrap gap-2" style="--d: 420ms" aria-label="Areas I work in">
+        {topics.map((t) => <li class="topic">{t}</li>)}
+      </ul>
     </div>
 
     <figure class="fade-up print-hide md:col-span-4" style="--d: 120ms">
-      <div class="relative ml-auto w-full max-w-md">
+      <div class="relative mx-auto w-full max-w-sm md:ml-auto md:mr-0">
         <span class="sun-disc" aria-hidden="true"></span>
         <div class="portrait relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-warm">
           <!-- TODO(aseem): replace with a proper headshot if I get one. -->
-          <Picture
-            src={hero}
-            formats={['avif', 'webp']}
-            widths={[480, 720, 960]}
-            sizes="(min-width: 768px) 420px, 90vw"
-            alt="Aseem sitting cross-legged on a huge green lawn, with long lines of trees on both sides and a big blue sky above"
-            class="h-full w-full object-cover"
-            style="object-position: 55% 50%"
-            loading="eager"
-            fetchpriority="high"
-            data-parallax
-          />
+          <div class="media absolute inset-0" data-parallax>
+            <Picture
+              src={hero}
+              formats={['avif', 'webp']}
+              widths={[480, 720, 840]}
+              sizes="(min-width: 768px) 384px, 90vw"
+              alt="Aseem sitting on a grass lawn by the sea under scattered clouds, smiling in sunglasses"
+              class="h-full w-full object-cover"
+              style="object-position: 50% 56%"
+              loading="eager"
+              fetchpriority="high"
+            />
+            <video
+              data-live
+              data-autoplay
+              data-mp4="/media/live/seaside-lawn.mp4"
+              data-webm="/media/live/seaside-lawn.webm"
+              muted
+              loop
+              playsinline
+              preload="none"
+              aria-hidden="true"
+              tabindex="-1"
+              class="absolute inset-0 h-full w-full object-cover"
+              style="object-position: 50% 56%"
+            ></video>
+          </div>
         </div>
+
+        <!-- The numbers, as floating chips. On phones they sit in a grid under the photo. -->
+        <dl class="chips">
+          <div class="stat-chip chip-a" data-reveal>
+            <dd class="display"><span data-count data-to="3600" data-prefix="₹" data-suffix=" Cr" data-locale="en-IN">₹3,600 Cr</span></dd>
+            <dt>annual FASTag volume owned</dt>
+          </div>
+          <div class="stat-chip chip-b" data-reveal>
+            <dd class="display"><span data-count data-to="1.5" data-decimals="1" data-suffix="M">1.5M</span></dd>
+            <dt>active vehicles</dt>
+          </div>
+          <div class="stat-chip chip-c" data-reveal>
+            <dd class="display">72% → <span data-count data-from="72" data-to="87" data-suffix="%">87%</span></dd>
+            <dt>payment success rate</dt>
+          </div>
+          <div class="stat-chip chip-d" data-reveal>
+            <dd class="display"><span data-count data-to="12">12</span>-person</dd>
+            <dt>product pod led</dt>
+          </div>
+        </dl>
       </div>
     </figure>
-  </div>
-
-  <div class="bg-accent text-on-accent">
-    <dl class="wrap grid grid-cols-2 md:grid-cols-4" data-reveal>
-      <div class="py-7 pr-4 md:py-9">
-        <dd class="display text-[clamp(2.2rem,5vw,4rem)]"><span data-count data-to="3600" data-prefix="₹" data-suffix=" Cr" data-locale="en-IN">₹3,600 Cr</span></dd>
-        <dt class="mt-1 text-sm">annual FASTag volume owned</dt>
-      </div>
-      <div class="py-7 pr-4 md:py-9">
-        <dd class="display text-[clamp(2.2rem,5vw,4rem)]"><span data-count data-to="1.5" data-decimals="1" data-suffix="M">1.5M</span></dd>
-        <dt class="mt-1 text-sm">active vehicles</dt>
-      </div>
-      <div class="py-7 pr-4 md:py-9">
-        <dd class="display text-[clamp(2.2rem,5vw,4rem)]">72% → <span data-count data-from="72" data-to="87" data-suffix="%">87%</span></dd>
-        <dt class="mt-1 text-sm">payment success rate</dt>
-      </div>
-      <div class="py-7 pr-4 md:py-9">
-        <dd class="display text-[clamp(2.2rem,5vw,4rem)]"><span data-count data-to="12">12</span>-person</dd>
-        <dt class="mt-1 text-sm">product pod led</dt>
-      </div>
-    </dl>
-  </div>
-
-  <div class="marquee" aria-hidden="true">
-    <div class="marquee-track">
-      {[0, 1, 2, 3].map(() => topics.map((t) => <span>{t}</span>))}
-    </div>
   </div>
 </section>
 
@@ -95,16 +110,41 @@ const topics = ['Payments', 'Embedded credit', 'Telematics', 'Data', 'FASTag', '
 
   .blob {
     position: absolute; left: -18%; top: -22%; width: 64vw; max-width: 820px; aspect-ratio: 1; border-radius: 50%; pointer-events: none;
-    background: radial-gradient(circle, color-mix(in srgb, var(--sun) 30%, transparent), transparent 68%);
+    background: radial-gradient(circle, color-mix(in srgb, var(--sun) 28%, transparent), transparent 68%);
     animation: drift 18s ease-in-out infinite alternate;
   }
   @keyframes drift { to { transform: translate(6%, 8%) scale(1.08); } }
 
   .sun-disc {
-    position: absolute; right: -14%; top: -9%; width: 80%; aspect-ratio: 1; border-radius: 50%; background: var(--sun);
+    position: absolute; right: -16%; top: -9%; width: 78%; aspect-ratio: 1; border-radius: 50%; background: var(--sun);
     animation: float 9s ease-in-out infinite alternate;
   }
   @keyframes float { to { transform: translate(-3%, 4%); } }
-  .portrait img { transform: scale(1.12); }
-  @media (prefers-reduced-motion: reduce) { .blob, .sun-disc { animation: none; } .portrait img { transform: none; } }
+  .media { transform: scale(1.12); }
+  .media :global(video) { opacity: 0; transition: opacity 700ms ease; }
+  .media :global(video.is-playing) { opacity: 1; }
+
+  .topic {
+    font-size: 0.85rem; padding: 0.4rem 0.9rem; border-radius: 999px;
+    background: color-mix(in srgb, var(--accent) 38%, transparent); color: var(--ink);
+  }
+
+  /* Floating stat chips. */
+  .chips { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 1.25rem; }
+  .stat-chip {
+    background: color-mix(in srgb, var(--card) 86%, transparent); backdrop-filter: blur(10px);
+    border-radius: 1.1rem; padding: 0.7rem 0.95rem; box-shadow: 0 10px 30px -12px rgb(0 0 0 / 0.25);
+  }
+  .stat-chip dd { font-size: 1.7rem; line-height: 1.05; margin: 0; color: var(--ink); }
+  .stat-chip dt { font-size: 0.72rem; color: var(--muted); margin-top: 0.15rem; line-height: 1.25; }
+  @media (min-width: 768px) {
+    .chips { display: block; margin: 0; }
+    .stat-chip { position: absolute; width: max-content; max-width: 11rem; animation: bob 7s ease-in-out infinite alternate; }
+    .chip-a { left: -14%; top: 9%; }
+    .chip-b { right: -5%; top: 38%; animation-delay: -2s; }
+    .chip-c { left: -16%; bottom: 20%; animation-delay: -4s; }
+    .chip-d { right: -3%; bottom: 4%; animation-delay: -1s; }
+  }
+  @keyframes bob { to { transform: translateY(-8px); } }
+  @media (prefers-reduced-motion: reduce) { .blob, .sun-disc, .stat-chip { animation: none; } .media { transform: none; } }
 </style>

@@ -10,7 +10,7 @@ const fonts = [
   { name: 'Instrument Serif', data: font('instrument-serif-latin-400-italic.woff'), weight: 400, style: 'italic' },
 ];
 
-const C = { paper: '#f6f3ee', ink: '#1b1a17', muted: '#5d594f', line: '#ddd5c8', accent: '#17776e', accentInk: '#0f5d55' };
+const C = { paper: '#f6f3ee', ink: '#1b1a17', muted: '#5d594f', line: '#ddd5c8', accent: '#8fd3bd', accentInk: '#27705f', onAccent: '#10302a' };
 const el = (type, style, children) => ({ type, props: { style, children } });
 const word = (t, extra = {}) => el('span', { marginRight: 16, ...extra }, t);
 
@@ -25,7 +25,7 @@ const og = el('div', {
   background: C.paper, padding: '64px 72px', fontFamily: 'Instrument Serif', color: C.ink,
 }, [
   el('div', { display: 'flex', alignItems: 'center', justifyContent: 'space-between' }, [
-    el('div', { display: 'flex', alignItems: 'center', justifyContent: 'center', width: 88, height: 88, borderRadius: 22, background: C.accent, color: C.paper, fontSize: 58 }, 'aj.'),
+    el('div', { display: 'flex', alignItems: 'center', justifyContent: 'center', width: 88, height: 88, borderRadius: 22, background: C.accent, color: C.onAccent, fontSize: 58 }, 'aj.'),
     el('div', { fontSize: 32, color: C.muted }, 'aseemjain.com'),
   ]),
   el('div', { display: 'flex', flexDirection: 'column' }, [
@@ -50,7 +50,7 @@ await render(og, 1200, 630, 'public/og.png');
 
 const icon = (size) => el('div', {
   display: 'flex', alignItems: 'center', justifyContent: 'center', width: size, height: size, background: C.accent,
-  color: C.paper, fontFamily: 'Instrument Serif', fontSize: Math.round(size * 0.62), letterSpacing: -2,
+  color: C.onAccent, fontFamily: 'Instrument Serif', fontSize: Math.round(size * 0.62), letterSpacing: -2,
 }, 'aj');
 await render(icon(180), 180, 180, 'public/apple-touch-icon.png');
 await render(icon(32), 32, 32, 'public/favicon-32.png');

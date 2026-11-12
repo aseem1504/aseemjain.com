@@ -1,13 +1,6 @@
 ---
 import experience from '../content/experience.json';
 
-const education = [
-  { title: 'B.Tech, Electronics and Communication Engineering', sub: 'Vellore Institute of Technology, Vellore', when: '2014 to 2018' },
-  { title: 'Advanced Certification in Data and Decision Science', sub: 'IIT Delhi', when: '2024 to 2025' },
-  { title: 'Lean Six Sigma Green Belt', sub: 'KPMG', when: '' },
-  { title: 'Competent Leader and Advanced Communicator', sub: 'Toastmasters International', when: '' },
-];
-
 const toolkit = [
   { label: 'Product', items: ['Discovery', 'Roadmaps', 'Pricing', 'A/B tests', 'Go-to-market'] },
   { label: 'Data', items: ['Python', 'SQL', 'MongoDB', 'PostgreSQL', 'ML basics'] },
@@ -15,7 +8,7 @@ const toolkit = [
 ];
 ---
 
-<section id="story" class="bg-sun-wash py-24 md:py-36" aria-labelledby="story-title">
+<section id="story" class="sheet bg-teal-wash pb-24 pt-20 md:pb-36 md:pt-28" aria-labelledby="story-title">
   <div class="wrap grid gap-12 md:grid-cols-12">
     <div class="md:col-span-4">
       <div class="md:sticky md:top-28">
@@ -50,22 +43,7 @@ const toolkit = [
     </div>
   </div>
 
-  <div class="wrap mt-16 grid gap-6 md:grid-cols-2">
-    <div class="border-t-2 border-ink pt-5" data-reveal>
-      <h3 class="eyebrow mb-4">Education and certifications</h3>
-      <ul class="grid gap-4">
-        {education.map((e) => (
-          <li class="flex items-baseline justify-between gap-4">
-            <div>
-              <p class="font-medium leading-snug">{e.title}</p>
-              <p class="text-sm text-muted">{e.sub}</p>
-            </div>
-            {e.when && <p class="shrink-0 text-sm text-muted">{e.when}</p>}
-          </li>
-        ))}
-      </ul>
-    </div>
-
+  <div class="wrap mt-16 grid gap-6">
     <div class="print-hide border-t-2 border-ink pt-5" data-reveal>
       <h3 class="eyebrow mb-4">Toolkit</h3>
       <dl class="grid gap-4">

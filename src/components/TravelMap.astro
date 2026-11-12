@@ -82,10 +82,10 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z]+/g, '-');
 
 <style>
   .land { fill: none; stroke: color-mix(in srgb, var(--ink) 18%, transparent); stroke-width: 3.2; stroke-linecap: round; }
-  .route { fill: none; stroke: var(--accent); stroke-width: 1.6; stroke-linecap: round; opacity: 0.7; }
+  .route { fill: none; stroke: var(--accent-ink); stroke-width: 1.5; stroke-linecap: round; opacity: 0.75; }
   .home { fill: var(--ink); }
-  .halo { fill: var(--accent); opacity: 0; transition: opacity 200ms; }
-  .spot { fill: var(--accent); stroke: var(--paper); stroke-width: 1.4; }
+  .halo { fill: var(--accent-ink); opacity: 0; transition: opacity 200ms; }
+  .spot { fill: var(--accent-ink); stroke: var(--sun-wash); stroke-width: 1.4; }
   .pin.is-hot .halo { opacity: 0.28; }
   .chip { font-size: 0.82rem; padding: 0.3rem 0.7rem; border-radius: 999px; border: 1px solid var(--line); background: var(--card); transition: border-color 160ms, background 160ms; }
   .chip:hover, .chip:focus-visible { border-color: var(--accent); }

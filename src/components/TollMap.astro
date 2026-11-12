@@ -1,6 +1,8 @@
 ---
 import toll from '../content/project-data/toll.json';
 
+const { compact = false } = Astro.props;
+
 // Project lat/lon onto a flat canvas, correcting longitude for latitude.
 const PAD = 30;
 const W = 340;
@@ -19,8 +21,8 @@ const plazas = [...toll.plazas].sort((a, b) => a.lat - b.lat).map((p, i) => ({ .
 const maxErr = Math.max(...plazas.map((p) => p.errM));
 ---
 
-<div class="grid items-start gap-6 md:grid-cols-5" data-toll-map>
-  <svg class="mx-auto w-full max-w-[340px] md:col-span-3" viewBox={`0 0 ${W} ${H}`} role="img"
+<div class={compact ? 'flex items-center gap-5' : 'grid items-start gap-6 md:grid-cols-5'} data-toll-map>
+  <svg class={compact ? 'h-[190px] w-auto shrink-0' : 'mx-auto w-full max-w-[340px] md:col-span-3'} viewBox={`0 0 ${W} ${H}`} role="img"
     aria-label={`Map of a fictional highway with ${plazas.length} toll plazas. A sample truck's GPS trail runs along it. The original grid matching missed ${toll.missedByGrid.length} crossings, circled.`}>
     <path d={trailPath} class="trail" pathLength="1" />
     {plazas.map((p) => (
@@ -32,7 +34,9 @@ const maxErr = Math.max(...plazas.map((p) => p.errM));
     ))}
   </svg>
 
-  <div class="md:col-span-2">
+  {compact ? (
+    <p class="text-sm text-muted"><span class="display block text-4xl text-ink">{toll.medianErrM} m</span>median plaza location error, from debits alone.<span class="mt-2 block text-xs">Circled: crossings the old grid method missed.</span></p>
+  ) : (<div class="md:col-span-2">
     <p class="mb-3 text-sm font-medium">Plaza location error, from debits alone</p>
     <ul class="grid gap-1.5 text-[0.82rem]">
       {plazas.map((p) => (
@@ -47,16 +51,16 @@ const maxErr = Math.max(...plazas.map((p) => p.errM));
       <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="9" class="miss" /></svg>
       Crossing the old grid method missed for this truck
     </p>
-  </div>
+  </div>)}
 </div>
 
 <style>
-  .trail { fill: none; stroke: var(--accent); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; opacity: 0.55; }
+  .trail { fill: none; stroke: var(--accent-ink); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; opacity: 0.55; }
   .plaza { fill: var(--card); stroke: var(--ink); stroke-width: 1.3; }
   .num { font: 600 10px var(--font-sans); fill: var(--ink); }
   .miss { fill: none; stroke: var(--accent-ink); stroke-width: 1.6; stroke-dasharray: 3 3; }
   .track { height: 8px; border-radius: 4px; background: color-mix(in srgb, var(--ink) 6%, transparent); overflow: hidden; display: block; }
-  .fill { display: block; height: 100%; width: var(--w); background: var(--accent); border-radius: 4px; transform-origin: left; }
+  .fill { display: block; height: 100%; width: var(--w); background: var(--accent-ink); border-radius: 4px; transform-origin: left; }
   :global(html.js) [data-toll-map] .trail { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 1.6s ease; }
   :global(html.js .is-in) [data-toll-map] .trail, :global(html.js) [data-toll-map]:global(.is-in) .trail { stroke-dashoffset: 0; }
   :global(html.js) [data-toll-map] .fill { transform: scaleX(0); transition: transform 800ms cubic-bezier(0.2, 0.7, 0.2, 1); }
