@@ -3,6 +3,7 @@ import { feature } from 'topojson-client';
 import { geoMercator, geoPath, geoContains } from 'd3-geo';
 import world from 'world-atlas/land-110m.json';
 import data from '../content/places.json';
+import indiaTopo from '../data/india-states.topo.json';
 
 // Region shown: Europe to Southeast Asia.
 // Corner points rather than a polygon: d3 reads a polygon's winding order as inside or outside.
@@ -40,72 +41,267 @@ const places = [...data.places]
   .sort((a, b) => order.indexOf(a.group) - order.indexOf(b.group))
   .map((p) => ({ ...p, xy: pt(p.lat, p.lon) }));
 
-// Abroad: cities and countries. India: states and union territories, listed by name.
+// Abroad: cities and countries. India is shown state by state on its own map.
 const abroad = places.filter((p) => p.group !== 'india');
 const cities = abroad.length;
 const countries = new Set(abroad.map((p) => p.country)).size;
-const states = data.indiaStates.length;
-const uts = data.indiaUTs.length;
-// Delhi and Ladakh also sit on the map, so their chips light the pin.
-const pinFor: Record<string, string> = { Delhi: 'delhi', Ladakh: 'leh-ladakh' };
 const groups = order.filter((id) => id !== 'india').map((id) => ({ id, label: data.groups.find((g) => g.id === id)!.label, items: places.filter((p) => p.group === id) }));
 const slug = (s: string) => s.toLowerCase().replace(/[^a-z]+/g, '-');
+
+// ---------- India, state by state ----------
+const seen = new Set([...data.indiaStates, ...data.indiaUTs]);
+const UT_NAMES = new Set(['Andaman and Nicobar Islands', 'Chandigarh', 'Dadra and Nagar Haveli and Daman and Diu', 'Delhi', 'Jammu and Kashmir', 'Ladakh', 'Lakshadweep', 'Puducherry']);
+const stateFeatures = (feature(indiaTopo as any, (indiaTopo as any).objects.states) as any).features as any[];
+const IW = 360, IH = 420;
+const iproj = geoMercator().fitExtent([[6, 6], [IW - 6, IH - 6]], { type: 'FeatureCollection', features: stateFeatures } as any);
+const ipath = geoPath(iproj);
+const states = stateFeatures
+  .map((f) => {
+    const name: string = f.properties.st_nm;
+    const [[x0, y0], [x1, y1]] = ipath.bounds(f);
+    const small = (x1 - x0) * (y1 - y0) < 220;
+    const c = ipath.centroid(f);
+    return { name, slug: slug(name), ut: UT_NAMES.has(name), visited: seen.has(name), d: ipath(f) as string, small, c };
+  })
+  .sort((a, b) => a.name.localeCompare(b.name));
+const known = new Set(states.map((s) => s.name));
+const missing = [...seen].filter((n) => !known.has(n));
+if (missing.length) throw new Error('Not found on the India map: ' + missing.join(', '));
+const nStates = states.filter((s) => !s.ut), nUTs = states.filter((s) => s.ut);
+const vStates = nStates.filter((s) => s.visited).length, vUTs = nUTs.filter((s) => s.visited).length;
+const ahm = iproj([data.home.lon, data.home.lat]) as [number, number];
 ---
 
-<div data-travel>
-  <svg viewBox={`0 0 ${W} ${H}`} class="h-auto w-full" role="img"
-    aria-label={`Map from Europe to Southeast Asia. Routes from Ahmedabad to Delhi and Ladakh in India and to ${cities} cities across ${countries} other countries and regions. ${states} Indian states and ${uts} union territories visited.`}>
-    <path d={dots} class="land" />
-    {places.map((p) => <path d={arc(home, p.xy)} class="route" data-group={p.group} pathLength="1" />)}
-    <circle cx={home[0]} cy={home[1]} r="6" class="home" />
-    {places.map((p) => (
-      <g class="pin" data-group={p.group} data-place={slug(p.name)}>
-        <circle cx={p.xy[0]} cy={p.xy[1]} r="9" class="halo" />
-        <circle cx={p.xy[0]} cy={p.xy[1]} r="3.6" class="spot"><title>{p.name}</title></circle>
-      </g>
-    ))}
-  </svg>
-
-  <p class="mt-4 text-sm text-muted">
-    <span class="display text-3xl text-ink" data-count data-to={states + uts}>{states + uts}</span> Indian states and union territories, and
-    <span class="display text-3xl text-ink" data-count data-to={cities}>{cities}</span> cities in
-    <span class="display text-3xl text-ink" data-count data-to={countries}>{countries}</span> other countries and regions. Routes start from Ahmedabad.
-  </p>
-
-  <div class="mt-6">
-    <h4 class="eyebrow mb-2">India · {states} states</h4>
-    <ul class="flex flex-wrap gap-2">
-      {data.indiaStates.map((s) => <li><span class="chip">{s}</span></li>)}
-    </ul>
-    <h4 class="eyebrow mb-2 mt-5">India · {uts} union territories</h4>
-    <ul class="flex flex-wrap gap-2">
-      {data.indiaUTs.map((s) => (
-        <li>{pinFor[s] ? <button type="button" class="chip" data-chip={pinFor[s]}>{s}</button> : <span class="chip">{s}</span>}</li>
-      ))}
-    </ul>
+<div data-travel data-mode="visited">
+  <div class="tabs" role="tablist" aria-label="Travel map">
+    <button type="button" role="tab" id="tab-india" aria-controls="panel-india" aria-selected="true" data-tab="india">India <span class="tab-n">{vStates + vUTs}/{nStates.length + nUTs.length}</span></button>
+    <button type="button" role="tab" id="tab-world" aria-controls="panel-world" aria-selected="false" tabindex="-1" data-tab="world">Abroad <span class="tab-n">{cities} cities</span></button>
+    <span class="tab-pill" aria-hidden="true"></span>
   </div>
 
-  <div class="mt-7 grid gap-5 sm:grid-cols-2">
-    {groups.map((g) => (
-      <div>
-        <h4 class="eyebrow mb-2">{g.label}</h4>
-        <ul class="flex flex-wrap gap-2">
-          {g.items.map((p) => (
-            <li><button type="button" class="chip" data-chip={slug(p.name)}>{p.name}</button></li>
-          ))}
-        </ul>
+  <!-- INDIA -->
+  <div role="tabpanel" id="panel-india" aria-labelledby="tab-india" data-panel="india" class="panel in-grid">
+    <figure class="india-fig">
+      <svg viewBox={`0 0 ${IW} ${IH}`} class="india-svg" role="img" aria-label={`Map of India. ${vStates} of ${nStates.length} states and ${vUTs} of ${nUTs.length} union territories visited.`}>
+        {states.map((s) => (
+          <path d={s.d} class="st" data-state={s.slug} data-name={s.name} data-kind={s.ut ? 'Union territory' : 'State'} data-visited={s.visited ? '1' : '0'} tabindex="0" role="button" aria-label={`${s.name}, ${s.visited ? 'visited' : 'not yet visited'}`} />
+        ))}
+        {states.filter((s) => s.visited && s.small).map((s) => <circle cx={s.c[0]} cy={s.c[1]} r="7" class="ring" />)}
+        <circle cx={ahm[0]} cy={ahm[1]} r="4" class="home-dot" />
+        <circle cx={ahm[0]} cy={ahm[1]} r="4" class="home-pulse" />
+      </svg>
+      <figcaption class="home-note"><span class="home-key"></span>Ahmedabad, home base</figcaption>
+    </figure>
+
+    <div class="info">
+      <div class="readout" aria-live="polite">
+        <p class="eyebrow" data-r-kind>India</p>
+        <p class="r-name display" data-r-name><span class="n">{vStates + vUTs}</span> of {nStates.length + nUTs.length}</p>
+        <p class="r-sub" data-r-sub>states and union territories visited. Hover or tap the map.</p>
       </div>
-    ))}
+
+      <div class="meters">
+        <div><div class="m-top"><span>States</span><b>{vStates} / {nStates.length}</b></div><div class="bar"><i style={`--p:${(vStates / nStates.length) * 100}%`}></i></div></div>
+        <div><div class="m-top"><span>Union territories</span><b>{vUTs} / {nUTs.length}</b></div><div class="bar"><i style={`--p:${(vUTs / nUTs.length) * 100}%`}></i></div></div>
+      </div>
+
+      <div class="seg" role="group" aria-label="Show">
+        <button type="button" data-mode-btn="visited" aria-pressed="true">Visited <span>{vStates + vUTs}</span></button>
+        <button type="button" data-mode-btn="togo" aria-pressed="false">Still to see <span>{nStates.length + nUTs.length - vStates - vUTs}</span></button>
+      </div>
+
+      <ul class="chips" aria-label="States and union territories">
+        {states.map((s) => (
+          <li data-visited={s.visited ? '1' : '0'}><button type="button" class="chip" data-chip-state={s.slug}>{s.name}{s.ut && <i class="ut">UT</i>}</button></li>
+        ))}
+      </ul>
+    </div>
+  </div>
+
+  <!-- ABROAD -->
+  <div role="tabpanel" id="panel-world" aria-labelledby="tab-world" data-panel="world" class="panel" hidden>
+    <svg viewBox={`0 0 ${W} ${H}`} class="h-auto w-full" role="img"
+      aria-label={`Map from Europe to Southeast Asia. Routes from Ahmedabad to ${cities} cities across ${countries} other countries and regions.`}>
+      <path d={dots} class="land" />
+      {places.filter((p) => p.group !== 'india').map((p) => <path d={arc(home, p.xy)} class="route" data-group={p.group} pathLength="1" />)}
+      <circle cx={home[0]} cy={home[1]} r="6" class="home" />
+      {places.filter((p) => p.group !== 'india').map((p) => (
+        <g class="pin" data-group={p.group} data-place={slug(p.name)}>
+          <circle cx={p.xy[0]} cy={p.xy[1]} r="10" class="halo" />
+          <circle cx={p.xy[0]} cy={p.xy[1]} r="3.6" class="spot"><title>{p.name}</title></circle>
+        </g>
+      ))}
+    </svg>
+    <p class="mt-4 text-sm text-muted">
+      <span class="display text-3xl text-ink">{cities}</span> cities in <span class="display text-3xl text-ink">{countries}</span> countries and regions. Routes start from Ahmedabad.
+    </p>
+    <div class="mt-5 grid gap-5 sm:grid-cols-2">
+      {groups.map((g) => (
+        <div>
+          <h4 class="eyebrow mb-2">{g.label}</h4>
+          <ul class="flex flex-wrap gap-2">
+            {g.items.map((p) => (
+              <li><button type="button" class="chip" data-chip={slug(p.name)}>{p.name}<i class="ut">{p.country}</i></button></li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
   </div>
 </div>
 
 <style>
+  .tabs { position: relative; display: inline-flex; gap: 0.25rem; padding: 0.3rem; border-radius: 999px; background: var(--card); border: 1px solid var(--line); margin-bottom: 1.6rem; }
+  .tabs button { position: relative; z-index: 1; padding: 0.5rem 1.05rem; border-radius: 999px; font-size: 0.9rem; font-weight: 600; color: var(--muted); transition: color 200ms; }
+  .tabs button[aria-selected='true'] { color: var(--on-accent); }
+  .tab-n { font-weight: 500; opacity: 0.75; margin-left: 0.3rem; font-size: 0.8rem; }
+  .tab-pill { position: absolute; z-index: 0; top: 0.3rem; bottom: 0.3rem; left: 0.3rem; width: 5rem; border-radius: 999px; background: var(--accent); transition: left 320ms cubic-bezier(0.2, 0.7, 0.2, 1), width 320ms cubic-bezier(0.2, 0.7, 0.2, 1); }
+
+  .in-grid { display: grid; gap: 1.5rem; align-items: start; }
+  @media (min-width: 640px) { .in-grid { grid-template-columns: minmax(0, 19rem) minmax(0, 1fr); gap: 2rem; } }
+  .india-fig { margin: 0; max-width: 21rem; }
+  .india-svg { width: 100%; height: auto; display: block; overflow: visible; }
+
+  .st { fill: color-mix(in srgb, var(--ink) 7%, var(--surface-1)); stroke: var(--line); stroke-width: 0.6; stroke-linejoin: round; outline: none; cursor: pointer; transition: fill 200ms, stroke 200ms, opacity 200ms; }
+  .st[data-visited='1'] { fill: color-mix(in srgb, var(--accent) 42%, var(--surface-2)); stroke: color-mix(in srgb, var(--accent) 70%, var(--surface-2)); }
+  .st:hover, .st:focus-visible, .st.is-hot { fill: var(--accent); stroke: var(--ink); stroke-width: 1; }
+  .st[data-visited='0'].is-hot, .st[data-visited='0']:hover, .st[data-visited='0']:focus-visible { fill: color-mix(in srgb, var(--ink) 22%, var(--surface-1)); }
+  [data-mode='togo'] .st[data-visited='1'] { fill: var(--surface-1); stroke: var(--line); }
+  [data-mode='togo'] .st[data-visited='0'] { fill: color-mix(in srgb, var(--ink) 16%, var(--surface-1)); stroke: color-mix(in srgb, var(--ink) 35%, var(--line)); }
+  [data-mode='togo'] .ring { opacity: 0; }
+  .ring { fill: none; stroke: var(--accent-ink); stroke-width: 1.2; pointer-events: none; transition: opacity 200ms; }
+  .home-dot { fill: var(--ink); stroke: var(--paper); stroke-width: 1.5; pointer-events: none; }
+  .home-pulse { fill: none; stroke: var(--ink); stroke-width: 1; pointer-events: none; transform-box: fill-box; transform-origin: center; animation: pulse 2.6s ease-out infinite; }
+  @keyframes pulse { from { transform: scale(1); opacity: 0.8; } to { transform: scale(4); opacity: 0; } }
+  .home-note { display: flex; align-items: center; gap: 0.5rem; font-size: 0.78rem; color: var(--muted); margin-top: 0.6rem; }
+  .home-key { width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--ink); }
+
+  .info { display: grid; gap: 1.15rem; }
+  .readout { background: var(--card); border: 1px solid var(--line); border-radius: 1.25rem; padding: 1rem 1.2rem; min-height: 7.2rem; }
+  .readout .eyebrow { margin: 0; }
+  .r-name { font-size: clamp(1.9rem, 3.4vw, 2.5rem); line-height: 1.05; margin: 0.35rem 0 0; color: var(--ink); }
+  .r-name .n { color: var(--accent-ink); }
+  .r-sub { font-size: 0.88rem; color: var(--muted); margin: 0.35rem 0 0; line-height: 1.4; }
+  .readout.is-yes .r-name { color: var(--accent-ink); }
+
+  .meters { display: grid; gap: 0.8rem; grid-template-columns: 1fr 1fr; }
+  .m-top { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--muted); margin-bottom: 0.35rem; }
+  .m-top b { color: var(--ink); font-weight: 600; }
+  .bar { height: 0.4rem; border-radius: 99px; background: var(--card); overflow: hidden; border: 1px solid var(--line); }
+  .bar i { display: block; height: 100%; width: var(--p); background: var(--accent); border-radius: 99px; transform-origin: left; animation: grow 900ms cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+  @keyframes grow { from { transform: scaleX(0); } }
+
+  .seg { display: inline-flex; padding: 0.25rem; gap: 0.2rem; border-radius: 999px; background: var(--card); border: 1px solid var(--line); width: fit-content; }
+  .seg button { padding: 0.38rem 0.85rem; border-radius: 999px; font-size: 0.82rem; font-weight: 600; color: var(--muted); transition: background 180ms, color 180ms; }
+  .seg button span { opacity: 0.7; font-weight: 500; margin-left: 0.2rem; }
+  .seg button[aria-pressed='true'] { background: color-mix(in srgb, var(--accent) 22%, transparent); color: var(--accent-ink); }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 0.4rem; list-style: none; margin: 0; padding: 0; }
+  [data-mode='visited'] .chips li[data-visited='0'], [data-mode='togo'] .chips li[data-visited='1'] { display: none; }
+  .chip { display: inline-block; line-height: 1.5; font-size: 0.82rem; padding: 0.28rem 0.7rem; border-radius: 999px; border: 1px solid var(--line); background: var(--card); transition: border-color 160ms, background 160ms, transform 160ms; }
+  .chip:hover, .chip:focus-visible, .chip.is-hot { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 14%, var(--card)); transform: translateY(-1px); }
+  .ut { font-style: normal; font-size: 0.64rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-left: 0.4rem; }
+
   .land { fill: none; stroke: color-mix(in srgb, var(--ink) 18%, transparent); stroke-width: 3.2; stroke-linecap: round; }
   .route { fill: none; stroke: var(--accent-ink); stroke-width: 1.5; stroke-linecap: round; opacity: 0.75; }
   .home { fill: var(--ink); }
   .halo { fill: var(--accent-ink); opacity: 0; transition: opacity 200ms; }
-  .spot { fill: var(--accent-ink); stroke: var(--surface-2); stroke-width: 1.4; }
-  .pin.is-hot .halo { opacity: 0.28; }
-  .chip { display: inline-block; line-height: 1.5; font-size: 0.82rem; padding: 0.3rem 0.7rem; border-radius: 999px; border: 1px solid var(--line); background: var(--card); transition: border-color 160ms, background 160ms; }
-  .chip:hover, .chip:focus-visible { border-color: var(--accent); }
+  .spot { fill: var(--accent-ink); stroke: var(--surface-2); stroke-width: 1.4; cursor: pointer; }
+  .pin.is-hot .halo, .pin:hover .halo { opacity: 0.3; }
+
+  @media (prefers-reduced-motion: reduce) { .home-pulse { animation: none; } .bar i { animation: none; } .tab-pill { transition: none; } }
 </style>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-travel]');
+  if (root) {
+    // ---- Tabs ----
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>('[data-tab]')];
+    const pill = root.querySelector<HTMLElement>('.tab-pill')!;
+    const movePill = () => {
+      const on = tabs.find((t) => t.getAttribute('aria-selected') === 'true')!;
+      pill.style.left = on.offsetLeft + 'px';
+      pill.style.width = on.offsetWidth + 'px';
+    };
+    const show = (id: string) => {
+      tabs.forEach((t) => { const on = t.dataset.tab === id; t.setAttribute('aria-selected', String(on)); t.tabIndex = on ? 0 : -1; });
+      root.querySelectorAll<HTMLElement>('[data-panel]').forEach((p) => { p.hidden = p.dataset.panel !== id; });
+      movePill();
+      if (id === 'world') document.dispatchEvent(new CustomEvent('travel:world-shown'));
+    };
+    tabs.forEach((t, i) => {
+      t.addEventListener('click', () => show(t.dataset.tab!));
+      t.addEventListener('keydown', (e) => {
+        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+        const n = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
+        show(n.dataset.tab!); n.focus();
+      });
+    });
+    movePill();
+    document.fonts?.ready.then(movePill);
+    addEventListener('resize', movePill);
+
+    // ---- India: map, readout and chips talk to each other ----
+    const readout = root.querySelector<HTMLElement>('.readout')!;
+    const rKind = readout.querySelector<HTMLElement>('[data-r-kind]')!;
+    const rName = readout.querySelector<HTMLElement>('[data-r-name]')!;
+    const rSub = readout.querySelector<HTMLElement>('[data-r-sub]')!;
+    const idle = { kind: rKind.textContent!, name: rName.innerHTML, sub: rSub.textContent! };
+    const paths = new Map<string, SVGPathElement>();
+    root.querySelectorAll<SVGPathElement>('.st').forEach((p) => paths.set(p.dataset.state!, p));
+    const chips = new Map<string, HTMLElement>();
+    root.querySelectorAll<HTMLElement>('[data-chip-state]').forEach((c) => chips.set(c.dataset.chipState!, c));
+    let pinned: string | null = null;
+
+    const hot = (slug: string | null, on: boolean) => {
+      if (!slug) return;
+      paths.get(slug)?.classList.toggle('is-hot', on);
+      chips.get(slug)?.classList.toggle('is-hot', on);
+    };
+    const describe = (slug: string | null) => {
+      if (!slug) { rKind.textContent = idle.kind; rName.innerHTML = idle.name; rSub.textContent = idle.sub; readout.classList.remove('is-yes'); return; }
+      const p = paths.get(slug)!;
+      const yes = p.dataset.visited === '1';
+      rKind.textContent = p.dataset.kind!;
+      rName.textContent = p.dataset.name!;
+      rSub.textContent = yes ? 'Visited' : 'Still on the list';
+      readout.classList.toggle('is-yes', yes);
+    };
+    const focusOn = (slug: string) => { hot(slug, true); describe(slug); };
+    const focusOff = (slug: string) => { if (pinned === slug) return; hot(slug, false); describe(pinned); };
+
+    for (const [slug, el] of [...paths, ...chips] as [string, Element][]) {
+      el.addEventListener('pointerenter', () => focusOn(slug));
+      el.addEventListener('pointerleave', () => focusOff(slug));
+      el.addEventListener('focus', () => focusOn(slug));
+      el.addEventListener('blur', () => focusOff(slug));
+      el.addEventListener('click', () => {
+        const prev = pinned;
+        pinned = prev === slug ? null : slug;
+        if (prev) hot(prev, false);
+        if (pinned) hot(pinned, true);
+        describe(pinned);
+      });
+      el.addEventListener('keydown', (e) => { if ((e as KeyboardEvent).key === 'Enter' || (e as KeyboardEvent).key === ' ') { e.preventDefault(); (el as HTMLElement).dispatchEvent(new MouseEvent('click')); } });
+    }
+
+    // ---- Visited / still to see ----
+    root.querySelectorAll<HTMLButtonElement>('[data-mode-btn]').forEach((b) => {
+      b.addEventListener('click', () => {
+        root.dataset.mode = b.dataset.modeBtn;
+        root.querySelectorAll<HTMLButtonElement>('[data-mode-btn]').forEach((o) => o.setAttribute('aria-pressed', String(o === b)));
+        if (pinned) { hot(pinned, false); pinned = null; describe(null); }
+      });
+    });
+
+    // ---- Abroad: chips light pins, pins light chips ----
+    root.querySelectorAll<HTMLElement>('[data-chip]').forEach((chip) => {
+      const pin = root.querySelector(`.pin[data-place="${chip.dataset.chip}"]`);
+      const on = () => { pin?.classList.add('is-hot'); chip.classList.add('is-hot'); };
+      const off = () => { pin?.classList.remove('is-hot'); chip.classList.remove('is-hot'); };
+      chip.addEventListener('pointerenter', on); chip.addEventListener('pointerleave', off);
+      chip.addEventListener('focus', on); chip.addEventListener('blur', off);
+      pin?.addEventListener('pointerenter', on); pin?.addEventListener('pointerleave', off);
+    });
+  }
+</script>
