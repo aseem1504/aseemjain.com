@@ -4,7 +4,7 @@ Logos are shown small and unaltered, as credentials. They belong to their owners
 
 | File | Source | Note |
 |---|---|---|
-| iima.svg | Wikimedia Commons, "IIM-A text logo.svg" | Marked public domain, trademarked |
+| iima.svg | en.wikipedia.org infobox, "IIM, Ahmedabad Logo.svg" (full emblem with IIMA lettering and motto) | Non-free logo (fair use) |
 | kpmg.svg | Wikimedia Commons, "KPMG blue logo.svg" | Marked public domain, trademarked |
 | iit-delhi.svg | en.wikipedia.org infobox, "Indian Institute of Technology Delhi Logo.svg" | Non-free logo (fair use) |
 | vit.svg | en.wikipedia.org infobox, "Vellore Institute of Technology seal 2017.svg" | Non-free logo (fair use) |
