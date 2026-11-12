@@ -1,0 +1,167 @@
+{
+  "home": {
+    "name": "Ahmedabad",
+    "lat": 23.02,
+    "lon": 72.57
+  },
+  "groups": [
+    {
+      "id": "india",
+      "label": "India",
+      "color": "accent"
+    },
+    {
+      "id": "sea",
+      "label": "Southeast Asia",
+      "color": "accent"
+    },
+    {
+      "id": "europe",
+      "label": "Europe",
+      "color": "accent"
+    }
+  ],
+  "places": [
+    {
+      "name": "Delhi",
+      "country": "India",
+      "group": "india",
+      "lat": 28.61,
+      "lon": 77.21
+    },
+    {
+      "name": "Leh, Ladakh",
+      "country": "India",
+      "group": "india",
+      "lat": 34.15,
+      "lon": 77.58
+    },
+    {
+      "name": "Hong Kong",
+      "country": "Hong Kong",
+      "group": "sea",
+      "lat": 22.32,
+      "lon": 114.17
+    },
+    {
+      "name": "Macau",
+      "country": "Macau",
+      "group": "sea",
+      "lat": 22.2,
+      "lon": 113.54
+    },
+    {
+      "name": "Hanoi",
+      "country": "Vietnam",
+      "group": "sea",
+      "lat": 21.03,
+      "lon": 105.85
+    },
+    {
+      "name": "Da Nang",
+      "country": "Vietnam",
+      "group": "sea",
+      "lat": 16.05,
+      "lon": 108.2
+    },
+    {
+      "name": "Ho Chi Minh City",
+      "country": "Vietnam",
+      "group": "sea",
+      "lat": 10.82,
+      "lon": 106.63
+    },
+    {
+      "name": "Bangkok",
+      "country": "Thailand",
+      "group": "sea",
+      "lat": 13.76,
+      "lon": 100.5
+    },
+    {
+      "name": "Pattaya",
+      "country": "Thailand",
+      "group": "sea",
+      "lat": 12.93,
+      "lon": 100.88
+    },
+    {
+      "name": "Kuala Lumpur",
+      "country": "Malaysia",
+      "group": "sea",
+      "lat": 3.14,
+      "lon": 101.69
+    },
+    {
+      "name": "Paris",
+      "country": "France",
+      "group": "europe",
+      "lat": 48.86,
+      "lon": 2.35
+    },
+    {
+      "name": "Berlin",
+      "country": "Germany",
+      "group": "europe",
+      "lat": 52.52,
+      "lon": 13.4
+    },
+    {
+      "name": "Copenhagen",
+      "country": "Denmark",
+      "group": "europe",
+      "lat": 55.68,
+      "lon": 12.57
+    },
+    {
+      "name": "Prague",
+      "country": "Czechia",
+      "group": "europe",
+      "lat": 50.08,
+      "lon": 14.44
+    },
+    {
+      "name": "Florence",
+      "country": "Italy",
+      "group": "europe",
+      "lat": 43.77,
+      "lon": 11.26
+    },
+    {
+      "name": "Milan",
+      "country": "Italy",
+      "group": "europe",
+      "lat": 45.46,
+      "lon": 9.19
+    }
+  ],
+  "indiaStates": [
+    "Andhra Pradesh",
+    "Assam",
+    "Goa",
+    "Gujarat",
+    "Haryana",
+    "Himachal Pradesh",
+    "Karnataka",
+    "Kerala",
+    "Madhya Pradesh",
+    "Maharashtra",
+    "Meghalaya",
+    "Punjab",
+    "Rajasthan",
+    "Sikkim",
+    "Tamil Nadu",
+    "Telangana",
+    "Uttar Pradesh",
+    "Uttarakhand",
+    "West Bengal"
+  ],
+  "indiaUTs": [
+    "Andaman and Nicobar Islands",
+    "Chandigarh",
+    "Delhi",
+    "Jammu and Kashmir",
+    "Ladakh",
+    "Puducherry"
+  ]
+}

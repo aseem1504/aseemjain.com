@@ -1,0 +1,32 @@
+# Reviewed exceptions for scripts/check_numbers.py. One token per line, with the reason after the #.
+# Anything not listed here and not found in a CV (or the project's own README) fails the check.
+
+# Card numbering in the projects list.
+01  # project card number
+02  # project card number
+03  # project card number
+04  # project card number
+05  # project card number
+06  # project card number
+07  # project card number
+08  # project card number
+9   # plaza row number beside the error bar in the toll map
+
+# Derived from data files, not typed by hand.
+11    # countries and regions count, computed from src/content/places.json
+16    # cities count computed from src/content/places.json, and the 16 beats of teental in the footer
+2027  # placement year in the contact line, from the build brief
+
+# Toll cost estimator. These come from the demo's own output (python demo.py), reproduced by
+# scripts/export_project_data.py. The README quotes the median (8 m) and "10 seconds".
+10s   # README says "10 seconds"
+2m    # per-plaza location error, toll demo output
+6m    # per-plaza location error, toll demo output
+22m   # per-plaza location error, toll demo output
+24m   # per-plaza location error, toll demo output
+31m   # per-plaza location error, toll demo output
+39m   # per-plaza location error, toll demo output
+
+# 404 page joke.
+40    # "tracked this page for 40 km"
+404   # error code

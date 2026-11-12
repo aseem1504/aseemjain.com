@@ -1,0 +1,71 @@
+[
+  {
+    "id": "iima",
+    "role": "PGPX, one-year MBA",
+    "org": "IIM Ahmedabad",
+    "place": "Ahmedabad",
+    "period": "2026 to 2027",
+    "highlights": [
+      "Outreach Cell head, IIMA Speaker Series.",
+      "Individual research project on AI-based credit risk for small businesses."
+    ]
+  },
+  {
+    "id": "wheelseye-spm",
+    "role": "Senior Product Manager, FASTag and Payments",
+    "org": "WheelsEye",
+    "place": "Gurgaon",
+    "period": "Feb 2022 to Jul 2025",
+    "highlights": [
+      "₹3,600 Cr annual volume, ₹36 Cr ARR, 1.5M active vehicles, and a 12-person product pod.",
+      "Vernacular engine in 8 Indian languages lifted penetration in non-Hindi, non-English regions from about 20% to 30%.",
+      "Monthly complaints cut from about 7K to 3K, and NPS up 18 points."
+    ]
+  },
+  {
+    "id": "pcl",
+    "role": "Product Manager",
+    "org": "PCL Health (London-based healthtech)",
+    "place": "India operations, Noida",
+    "period": "Aug 2021 to Jan 2022",
+    "highlights": [
+      "Remote-care pilots across 10 NHS-affiliated hospitals. One converted to a paid contract.",
+      "OCR device reader on Google Vision. Hired an 8-person tech team in under 2 months.",
+      "Introduced scrum, which cut delivery cycle time by 35%."
+    ]
+  },
+  {
+    "id": "wheelseye-apm",
+    "role": "Associate Product Manager, Operations",
+    "org": "WheelsEye",
+    "place": "Gurgaon",
+    "period": "Apr 2020 to Aug 2021",
+    "highlights": [
+      "Geo-based auto-allocation for 2,800 daily orders: hit rate up 27%, cost per order down 22%.",
+      "₹2.4 Cr a year saved through inventory control on 60,000 GPS units.",
+      "Customer churn down 22%."
+    ]
+  },
+  {
+    "id": "wheelseye-analyst",
+    "role": "Data Analyst, Banks and Channel Partnerships",
+    "org": "WheelsEye",
+    "place": "Gurgaon",
+    "period": "Apr 2019 to Apr 2020",
+    "highlights": [
+      "Risk analytics that onboarded Tata Motors Finance and ICICI Bank, built on 150K GPS-tracked vehicles.",
+      "Behavioural features that lenders used for an asset class with no reliable credit history."
+    ]
+  },
+  {
+    "id": "wheelseye-iot",
+    "role": "IoT Engineer, IoT and Labs (founding member)",
+    "org": "WheelsEye",
+    "place": "Gurgaon",
+    "period": "Nov 2018 to Apr 2019",
+    "highlights": [
+      "Grew the team from 1 to 8.",
+      "27-feature model predicting GPS signal-loss exit at 96.7% held-out accuracy across a 200K-truck fleet."
+    ]
+  }
+]

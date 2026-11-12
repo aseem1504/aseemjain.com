@@ -1,0 +1,62 @@
+[
+  {
+    "file": "pangong",
+    "alt": "Aseem standing in clear shallow water at a high-altitude lake with his arms stretched wide, brown mountains and a big cloudy sky ahead",
+    "caption": "Pangong Lake, Ladakh",
+    "live": false,
+    "_todo": "TODO(aseem): confirm the place (IMG_1015)."
+  },
+  {
+    "file": "riverside",
+    "alt": "Aseem sitting on a riverside wall at night, in a cream cap and white linen shirt, looking off to the side, with the lit far bank behind him",
+    "caption": "A riverside at night",
+    "live": false,
+    "_todo": "TODO(aseem): add the place (IMG_4752, the old hero photo)."
+  },
+  {
+    "file": "louvre",
+    "alt": "Aseem in a dark jacket looking up, standing in front of the glass pyramid and the lit palace of the Louvre at night",
+    "caption": "The Louvre, Paris, at night",
+    "live": false
+  },
+  {
+    "file": "berlin-cathedral",
+    "alt": "Aseem smiling in a navy cap and sunglasses beside a river, with the green-domed Berlin Cathedral behind him",
+    "caption": "Berlin Cathedral",
+    "live": true
+  },
+  {
+    "file": "canal-bicycle",
+    "alt": "Aseem standing with a bicycle beside a long straight canal lined with tall trees under a cloudy sky",
+    "caption": "By a long canal, with a bicycle",
+    "live": true,
+    "_todo": "TODO(aseem): add the place, possibly Versailles (IMG_4061)."
+  },
+  {
+    "file": "waterfall",
+    "alt": "Aseem in sunglasses and a bandana sitting on a rock in front of a waterfall and a turquoise pool",
+    "caption": "A waterfall and a turquoise pool",
+    "live": false,
+    "_todo": "TODO(aseem): add the place (IMG_1261)."
+  },
+  {
+    "file": "formal",
+    "alt": "Aseem in a navy suit and dark sunglasses, standing against a brass tree sculpture on a wood-panelled wall",
+    "caption": "The formal side",
+    "live": true
+  },
+  {
+    "file": "wide-lawn",
+    "alt": "Aseem sitting cross-legged on a huge green lawn with long lines of trees and a big blue sky",
+    "caption": "A wide lawn under a big sky",
+    "live": true,
+    "_todo": "TODO(aseem): add the place (IMG_4100)."
+  },
+  {
+    "file": "seaside-lawn",
+    "alt": "Aseem sitting on a grass lawn by the sea under scattered clouds",
+    "caption": "A lawn by the sea",
+    "live": true,
+    "_todo": "TODO(aseem): add the place (IMG_5412)."
+  }
+]

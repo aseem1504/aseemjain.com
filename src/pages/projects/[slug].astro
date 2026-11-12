@@ -1,0 +1,83 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import PipelineDiagram from '../../components/PipelineDiagram.astro';
+import ResultVisual from '../../components/ResultVisual.astro';
+import Footer from '../../components/Footer.astro';
+
+export async function getStaticPaths() {
+  const all = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+  const pages = all.filter((p) => !p.data.inProgress);
+  return pages.map((p, i) => ({
+    params: { slug: p.id },
+    props: { project: p, prev: pages[i - 1], next: pages[i + 1] },
+  }));
+}
+
+const { project, prev, next } = Astro.props;
+const d = project.data;
+const { Content } = await render(project);
+const repoUrl = d.repo ? `https://github.com/aseem1504/${d.repo}` : undefined;
+---
+
+<Base
+  title={`${d.title} | Aseem Jain`}
+  description={`${d.problem} ${d.result}`}
+  path={`/projects/${project.id}/`}
+>
+  <article class="wrap py-12 md:py-20">
+    <a href="/#projects" class="text-sm text-muted transition-colors hover:text-ink">← All projects</a>
+
+    <header class="mt-6 max-w-3xl">
+      <ul class="mb-4 flex flex-wrap gap-2">{d.tags.map((t) => <li class="rounded-full border border-line px-2.5 py-0.5 text-xs text-muted">{t}</li>)}</ul>
+      <h1 class="display text-[clamp(2.4rem,6vw,4.5rem)]">{d.title}</h1>
+      <dl class="mt-8 grid gap-5 text-lg">
+        <div><dt class="eyebrow mb-1">The problem</dt><dd class="text-ink/85">{d.problem}</dd></div>
+        <div><dt class="eyebrow mb-1">What I built</dt><dd class="text-ink/85">{d.built}</dd></div>
+        <div><dt class="eyebrow mb-1">The result</dt><dd class="font-medium">{d.result}</dd></div>
+      </dl>
+      <div class="mt-8 flex flex-wrap gap-3">
+        {repoUrl && <a class="btn btn-primary" href={repoUrl} target="_blank" rel="noopener">View code ↗</a>}
+        <a class="btn" href="/Aseem_Jain_CV.pdf" download>Download CV</a>
+      </div>
+    </header>
+
+    {d.workLink && (
+      <aside class="mt-12 max-w-3xl rounded-2xl border border-line bg-warm p-5 text-[0.97rem] text-ink/85">
+        <p class="eyebrow mb-1">Where this shows up in my work</p>
+        <p>{d.workLink}</p>
+      </aside>
+    )}
+
+    <div class="project-card mt-12 rounded-3xl border border-line bg-card p-6 md:p-8">
+      <p class="mb-3 text-xs text-muted">How it works. Hover to see the flow.</p>
+      <PipelineDiagram steps={d.steps} name={d.title} />
+    </div>
+
+    {d.visual && (
+      <div class="mt-8 rounded-3xl border border-line bg-card p-6 md:p-8">
+        <ResultVisual visual={d.visual} />
+      </div>
+    )}
+
+    <div class="prose mt-12 max-w-3xl">
+      <Content />
+    </div>
+
+    <nav class="mt-16 grid gap-4 border-t border-line pt-8 sm:grid-cols-2" aria-label="More projects">
+      {prev ? (
+        <a href={`/projects/${prev.id}`} class="rounded-2xl border border-line p-5 transition-colors hover:border-ink">
+          <p class="text-xs text-muted">← Previous</p>
+          <p class="display mt-1 text-xl">{prev.data.title}</p>
+        </a>
+      ) : <span />}
+      {next ? (
+        <a href={`/projects/${next.id}`} class="rounded-2xl border border-line p-5 text-left transition-colors hover:border-ink sm:text-right">
+          <p class="text-xs text-muted">Next →</p>
+          <p class="display mt-1 text-xl">{next.data.title}</p>
+        </a>
+      ) : <span />}
+    </nav>
+  </article>
+  <Footer />
+</Base>

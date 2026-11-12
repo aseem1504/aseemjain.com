@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.astro/
+.DS_Store
+.env
+*.log
+# Source media and CV text live outside the repo on purpose.
+media-src/
+master_cv.txt

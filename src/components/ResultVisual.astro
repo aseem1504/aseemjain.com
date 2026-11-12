@@ -1,0 +1,27 @@
+---
+import CompareBars from './CompareBars.astro';
+import TollMap from './TollMap.astro';
+import IndiaMap from './IndiaMap.astro';
+
+interface Props {
+  compact?: boolean;
+  visual: {
+    kind: 'compare' | 'map-toll' | 'map-india';
+    caption: string;
+    unit?: string;
+    beforeLabel?: string;
+    afterLabel?: string;
+    rows?: { label: string; before: number; after: number; max?: number; note?: string }[];
+  };
+}
+const { visual, compact = false } = Astro.props;
+---
+
+<figure data-reveal>
+  {visual.kind === 'compare' && visual.rows && (
+    <CompareBars rows={visual.rows} unit={visual.unit} beforeLabel={visual.beforeLabel} afterLabel={visual.afterLabel} compact={compact} />
+  )}
+  {visual.kind === 'map-toll' && <TollMap compact={compact} />}
+  {visual.kind === 'map-india' && <IndiaMap compact={compact} />}
+  <figcaption class={compact ? 'mt-2 text-[0.7rem] leading-snug text-muted' : 'mt-4 text-xs text-muted'}>{visual.caption}</figcaption>
+</figure>

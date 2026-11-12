@@ -1,0 +1,63 @@
+---
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import photosData from '../content/photos.json';
+
+const imgs = import.meta.glob<{ default: ImageMetadata }>('../assets/photos/*.jpg', { eager: true });
+const photos = photosData.map((p) => ({ ...p, img: imgs[`../assets/photos/${p.file}.jpg`].default }));
+---
+
+<ul class="columns-2 gap-3 md:columns-3" data-gallery>
+  {photos.map((p) => (
+    <li class="photo relative mb-3 break-inside-avoid overflow-hidden rounded-2xl bg-warm" data-reveal>
+      <Picture
+        src={p.img}
+        formats={['avif', 'webp']}
+        widths={[400, 640, 960]}
+        sizes="(min-width: 768px) 33vw, 50vw"
+        alt={p.alt}
+        loading="lazy"
+        class="block h-auto w-full"
+      />
+      {p.live && (
+        <video
+          data-live
+          data-mp4={`/media/live/${p.file}.mp4`}
+          data-webm={`/media/live/${p.file}.webm`}
+          muted
+          loop
+          playsinline
+          preload="none"
+          aria-hidden="true"
+          tabindex="-1"
+          class="absolute inset-0 h-full w-full object-cover"
+        ></video>
+      )}
+      <span class="cap">{p.caption}</span>
+      {p.live && (
+        <span class="live" aria-hidden="true">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="7" stroke-dasharray="2 3"/><circle cx="12" cy="12" r="10.5"/></svg>
+          Live
+        </span>
+      )}
+    </li>
+  ))}
+</ul>
+
+<style>
+  .photo :global(img) { transition: transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .photo:hover :global(img) { transform: scale(1.05); }
+  video { opacity: 0; transition: opacity 260ms ease; pointer-events: none; }
+  video.is-playing { opacity: 1; }
+  .cap {
+    position: absolute; left: 0.6rem; bottom: 0.6rem; right: 0.6rem; font-size: 0.78rem; line-height: 1.3; color: #fff;
+    text-shadow: 0 1px 8px rgb(0 0 0 / 0.55); opacity: 0; transform: translateY(4px); transition: opacity 200ms, transform 200ms;
+  }
+  .photo:hover .cap, .photo:focus-within .cap { opacity: 1; transform: none; }
+  @media (hover: none) { .cap { opacity: 1; transform: none; } }
+  .live {
+    position: absolute; top: 0.55rem; left: 0.55rem; display: inline-flex; gap: 0.3rem; align-items: center; font-size: 0.68rem; font-weight: 600;
+    letter-spacing: 0.04em; color: #fff; background: rgb(0 0 0 / 0.38); padding: 0.18rem 0.5rem; border-radius: 999px; backdrop-filter: blur(6px);
+  }
+  @media (prefers-reduced-motion: reduce) { .live { display: none; } video { display: none; } }
+</style>

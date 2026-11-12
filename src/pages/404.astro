@@ -1,0 +1,19 @@
+---
+import Base from '../layouts/Base.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Base title="Page not found | Aseem Jain" description="This page does not exist." path="/404">
+  <section class="wrap grid min-h-[70vh] place-content-center py-24 text-center">
+    <p class="eyebrow mb-4">Error 404</p>
+    <h1 class="display text-[clamp(3rem,9vw,7rem)]">Wrong highway.</h1>
+    <p class="mx-auto mt-5 max-w-md text-lg text-muted">
+      I tracked this page for 40 km and found nothing. It may have been moved, or it never existed.
+    </p>
+    <div class="mt-8 flex flex-wrap justify-center gap-3">
+      <a class="btn btn-primary" href="/">Back to the start</a>
+      <a class="btn" href="/#projects">See the projects</a>
+    </div>
+  </section>
+  <Footer />
+</Base>
