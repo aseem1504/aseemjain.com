@@ -83,6 +83,8 @@ if (lensRoot) {
   const moveUnderline = (tab: HTMLElement) => {
     if (!underline) return;
     underline.style.width = `${tab.offsetWidth}px`;
+    underline.style.height = `${tab.offsetHeight}px`;
+    underline.style.top = `${tab.offsetTop}px`;
     underline.style.transform = `translateX(${tab.offsetLeft}px)`;
   };
 
@@ -100,7 +102,13 @@ if (lensRoot) {
     const apply = () => lensRoot!.setAttribute('data-active-lens', id);
     if (animate && !reduceMotion) {
       bodies.forEach((b) => b.classList.add('is-swapping'));
-      setTimeout(() => { apply(); requestAnimationFrame(() => bodies.forEach((b) => b.classList.remove('is-swapping'))); }, 170);
+      setTimeout(() => {
+        apply();
+        // Cards settle one after another.
+        bodies.forEach((b, i) => { (b as HTMLElement).style.transitionDelay = `${i * 55}ms`; });
+        requestAnimationFrame(() => bodies.forEach((b) => b.classList.remove('is-swapping')));
+        setTimeout(() => bodies.forEach((b) => { (b as HTMLElement).style.transitionDelay = ''; }), 700);
+      }, 170);
     } else apply();
 
     if (push) {
@@ -179,5 +187,6 @@ if (!reduceMotion) {
   if ($('[data-travel]')) {
     import('./travel.ts').catch(() => $('[data-travel]')?.classList.add('is-drawn'));
   }
+  import('./motion.ts').catch(() => $$('[data-rise]').forEach((e) => { e.style.opacity = '1'; }));
   if ($$('video[data-live]').length) import('./live-photos.ts').catch(() => {});
 }

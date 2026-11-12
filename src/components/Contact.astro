@@ -2,16 +2,16 @@
 const email = 'x26aseemj@iima.ac.in';
 ---
 
-<section id="contact" class="py-24 md:py-32" aria-labelledby="contact-title">
+<section id="contact" class="bg-accent py-28 text-on-accent md:py-40" aria-labelledby="contact-title">
   <div class="wrap text-center">
     <p class="eyebrow mb-4" data-reveal>Contact</p>
-    <h2 id="contact-title" class="display text-[clamp(3rem,9vw,7rem)]" data-reveal>Let's talk.</h2>
-    <p class="mx-auto mt-5 max-w-xl text-lg text-muted" data-reveal>
+    <h2 id="contact-title" class="display text-[clamp(3.4rem,11vw,9rem)]" data-split>Let's talk.</h2>
+    <p class="mx-auto mt-6 max-w-xl text-lg md:text-xl" data-reveal>
       I'm exploring product, strategy and consulting roles for 2027.
     </p>
 
     <div class="mt-10 flex flex-col items-center gap-4" data-reveal>
-      <a href={`mailto:${email}`} class="display break-all text-[clamp(1.5rem,4.5vw,3rem)] text-accent-ink underline decoration-line decoration-2 underline-offset-8 transition-colors hover:decoration-accent">
+      <a href={`mailto:${email}`} class="display break-all text-[clamp(1.5rem,4.5vw,3rem)] underline decoration-on-accent/40 decoration-2 underline-offset-8 transition-colors hover:decoration-on-accent">
         {email}
       </a>
       <button type="button" class="btn no-print" data-copy={email} aria-label="Copy email address">
@@ -30,3 +30,12 @@ const email = 'x26aseemj@iima.ac.in';
     </div>
   </div>
 </section>
+
+<style>
+  #contact .eyebrow { color: var(--on-accent); }
+  /* Outline buttons on the teal block, then the primary one filled with paper. Order matters. */
+  #contact :global(.btn) { border-color: color-mix(in srgb, var(--on-accent) 45%, transparent); background: transparent; color: var(--on-accent); }
+  #contact :global(.btn:hover) { border-color: var(--on-accent); }
+  #contact :global(.btn.btn-primary) { background: var(--paper); color: var(--accent-ink); border-color: var(--paper); }
+  #contact :global(.btn.btn-primary:hover) { background: var(--card); border-color: var(--card); }
+</style>

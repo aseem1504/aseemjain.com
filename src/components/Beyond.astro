@@ -14,10 +14,10 @@ const renderedPoems = await Promise.all(poems.map(async (p) => ({ p, Content: (a
 const beats = [10, 7, 7, 9, 10, 7, 7, 9, 10, 4, 4, 5, 5, 7, 7, 9];
 ---
 
-<section id="beyond" class="bg-warm py-20 md:py-28" aria-labelledby="beyond-title">
+<section id="beyond" class="bg-teal-wash py-24 md:py-36" aria-labelledby="beyond-title">
   <div class="wrap">
     <p class="eyebrow mb-3" data-reveal>Beyond work</p>
-    <h2 id="beyond-title" class="display text-4xl md:text-6xl" data-reveal>Off the clock.</h2>
+    <h2 id="beyond-title" class="display text-[clamp(2.6rem,6.5vw,5.5rem)]" data-split>Off the clock.</h2>
 
     <!-- Travel -->
     <div class="mt-16 grid gap-8 md:grid-cols-12 md:gap-12" id="travel">
@@ -72,7 +72,7 @@ const beats = [10, 7, 7, 9, 10, 7, 7, 9, 10, 4, 4, 5, 5, 7, 7, 9];
       {renderedPoems.length > 0 && (
         <div class="grid gap-5 md:col-span-8 sm:grid-cols-2">
           {renderedPoems.map(({ p, Content }) => (
-            <article class="rounded-2xl border border-line bg-card p-6" data-reveal>
+            <article class="border-t-2 border-ink pt-5" data-reveal>
               <h4 class={`text-xl ${p.data.lang === 'hi' ? 'font-deva' : 'display'}`} lang={p.data.lang}>{p.data.title}</h4>
               {p.data.english && <p class="mt-1 text-sm italic text-muted">{p.data.english}</p>}
               <div class={`poem mt-4 ${p.data.lang === 'hi' ? 'font-deva' : 'font-serif'}`} lang={p.data.lang}><Content /></div>
@@ -91,7 +91,7 @@ const beats = [10, 7, 7, 9, 10, 7, 7, 9, 10, 4, 4, 5, 5, 7, 7, 9];
       </div>
       <ul class="grid gap-5 md:col-span-8 sm:grid-cols-2">
         {speakers.map((s) => (
-          <li class="rounded-2xl border border-line bg-card p-6" data-reveal>
+          <li class="border-t-2 border-ink pt-5" data-reveal>
             <p class="eyebrow mb-2">Featured speaker</p>
             <h4 class="display text-2xl">{s.name}</h4>
             {(s.title || s.company) && <p class="mt-1 text-muted">{[s.title, s.company].filter(Boolean).join(', ')}</p>}

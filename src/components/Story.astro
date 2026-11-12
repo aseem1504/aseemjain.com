@@ -15,12 +15,12 @@ const toolkit = [
 ];
 ---
 
-<section id="story" class="bg-warm py-20 md:py-28" aria-labelledby="story-title">
+<section id="story" class="bg-sun-wash py-24 md:py-36" aria-labelledby="story-title">
   <div class="wrap grid gap-12 md:grid-cols-12">
     <div class="md:col-span-4">
       <div class="md:sticky md:top-28">
         <p class="eyebrow mb-3" data-reveal>Story</p>
-        <h2 id="story-title" class="display text-4xl md:text-5xl" data-reveal>From fixing trackers to owning payments.</h2>
+        <h2 id="story-title" class="display text-[clamp(2.4rem,5vw,4.2rem)]" data-split>From fixing trackers to owning payments.</h2>
         <p class="prose-sm print-hide mt-5" data-reveal>
           I started on the hardware side, fixing GPS trackers on trucks. Then I learned to read the data they sent. Then I started building the products around it. At the time, I was the only person in the company's history to move into product from a non-product role, without an MBA. Each move came from doing the work, not waiting for a title.
         </p>
@@ -51,7 +51,7 @@ const toolkit = [
   </div>
 
   <div class="wrap mt-16 grid gap-6 md:grid-cols-2">
-    <div class="rounded-2xl border border-line bg-card p-6" data-reveal>
+    <div class="border-t-2 border-ink pt-5" data-reveal>
       <h3 class="eyebrow mb-4">Education and certifications</h3>
       <ul class="grid gap-4">
         {education.map((e) => (
@@ -66,7 +66,7 @@ const toolkit = [
       </ul>
     </div>
 
-    <div class="print-hide rounded-2xl border border-line bg-card p-6" data-reveal>
+    <div class="print-hide border-t-2 border-ink pt-5" data-reveal>
       <h3 class="eyebrow mb-4">Toolkit</h3>
       <dl class="grid gap-4">
         {toolkit.map((g) => (
