@@ -51,20 +51,6 @@ const topics = ['Payments', 'Embedded credit', 'Telematics', 'Data', 'FASTag', '
               loading="eager"
               fetchpriority="high"
             />
-            <video
-              data-live
-              data-autoplay
-              data-mp4="/media/live/wide-lawn.mp4"
-              data-webm="/media/live/wide-lawn.webm"
-              muted
-              loop
-              playsinline
-              preload="none"
-              aria-hidden="true"
-              tabindex="-1"
-              class="absolute inset-0 h-full w-full object-cover"
-              style="object-position: 50% 60%"
-            ></video>
           </div>
         </div>
       </figure>
@@ -122,8 +108,6 @@ const topics = ['Payments', 'Embedded credit', 'Telematics', 'Data', 'FASTag', '
   .frame::before { content: ""; position: absolute; inset: 6% 4% -4%; border-radius: 2rem; background: radial-gradient(closest-side, color-mix(in srgb, var(--accent) 22%, transparent), transparent); filter: blur(30px); z-index: 0; }
   .photo { position: relative; z-index: 1; border: 1px solid var(--line); }
   .media { transform: scale(1.06); }
-  .media :global(video) { opacity: 0; transition: opacity 700ms ease; }
-  .media :global(video.is-playing) { opacity: 1; }
 
   .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.9rem; margin: 1.1rem 0 0; }
   @media (min-width: 760px) { .stats { grid-template-columns: repeat(4, 1fr); gap: 1.1rem; } }
