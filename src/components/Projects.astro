@@ -1,0 +1,26 @@
+---
+import { getCollection } from 'astro:content';
+import ProjectCard from './ProjectCard.astro';
+
+// Order is set by `order` in each project's frontmatter. Strongest and most visual first:
+// the two map projects, then the one a non-technical reader follows easily, then the leakage case study.
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<section id="projects" class="py-20 md:py-28" aria-labelledby="projects-title">
+  <div class="wrap">
+    <p class="eyebrow mb-3" data-reveal>Projects</p>
+    <h2 id="projects-title" class="display text-4xl md:text-6xl" data-reveal>I still write code.</h2>
+    <p class="prose-sm mt-4 text-lg" data-reveal>
+      Small, honest rebuilds of problems I solved at work, on synthetic or public data.
+    </p>
+
+    <div class="mt-12 grid gap-8">
+      {projects.map((p, i) => <ProjectCard project={p} index={i} />)}
+    </div>
+
+    <p class="mt-8 text-sm text-muted" data-reveal>
+      All of it is on <a class="font-medium text-accent-ink underline decoration-line underline-offset-4 hover:decoration-accent" href="https://github.com/aseem1504" target="_blank" rel="noopener">GitHub ↗</a>.
+    </p>
+  </div>
+</section>

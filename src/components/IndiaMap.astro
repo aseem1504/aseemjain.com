@@ -1,0 +1,80 @@
+---
+import { feature } from 'topojson-client';
+import { geoMercator, geoPath } from 'd3-geo';
+import world from 'world-atlas/countries-50m.json';
+import data from '../content/project-data/india-lanes.json';
+
+const countries = feature(world as any, (world as any).objects.countries) as any;
+const india = countries.features.find((f: any) => String(f.id) === '356');
+
+const W = 360, H = 400;
+const projection = geoMercator().fitExtent([[14, 10], [W - 14, H - 10]], india);
+const outline = geoPath(projection)(india) as string;
+const pt = (lat: number, lon: number) => projection([lon, lat]) as [number, number];
+
+const byName = Object.fromEntries(data.cities.map((c) => [c.city, c]));
+// A smooth curve through each lane's cities.
+function smooth(points: [number, number][]) {
+  if (points.length < 2) return '';
+  let d = `M${points[0][0].toFixed(1)} ${points[0][1].toFixed(1)}`;
+  for (let i = 1; i < points.length; i++) {
+    const [x0, y0] = points[i - 1], [x1, y1] = points[i];
+    const mx = (x0 + x1) / 2, my = (y0 + y1) / 2;
+    d += ` Q${x0.toFixed(1)} ${y0.toFixed(1)} ${mx.toFixed(1)} ${my.toFixed(1)}`;
+    if (i === points.length - 1) d += ` T${x1.toFixed(1)} ${y1.toFixed(1)}`;
+  }
+  return d;
+}
+const lanes = Object.entries(data.lanes as Record<string, string[]>).map(([name, cities]) => ({
+  name,
+  d: smooth(cities.map((c) => pt(byName[c].lat, byName[c].lon))),
+}));
+const usedCities = new Set(Object.values(data.lanes as Record<string, string[]>).flat());
+const cityDots = data.cities.filter((c) => usedCities.has(c.city)).map((c) => ({ ...c, p: pt(c.lat, c.lon) }));
+const workshops = data.workshops.map((w) => ({ ...w, p: pt(w.lat, w.lon) }));
+const groups = data.groups.slice(0, 5);
+---
+
+<div class="grid items-start gap-6 md:grid-cols-5" data-india-map>
+  <svg class="mx-auto w-full max-w-[360px] md:col-span-3" viewBox={`0 0 ${W} ${H}`} role="img"
+    aria-label={`Map of India. ${lanes.length} freight lanes found from truck footprints, and ${workshops.length} workshop hubs found from pre-disconnect pings.`}>
+    <path d={outline} class="land" />
+    {lanes.map((l, i) => <path d={l.d} class="lane" pathLength="1" style={`transition-delay:${i * 110}ms`} />)}
+    {cityDots.map((c) => <circle cx={c.p[0]} cy={c.p[1]} r="2.2" class="city" />)}
+    {workshops.map((w) => (
+      <g>
+        <circle cx={w.p[0]} cy={w.p[1]} r="7" class="ws-ring" />
+        <circle cx={w.p[0]} cy={w.p[1]} r="2.6" class="ws" />
+      </g>
+    ))}
+  </svg>
+
+  <div class="md:col-span-2">
+    <dl class="grid gap-4">
+      <div>
+        <dt class="text-xs text-muted">Groups found from {lanes.length} hidden lanes. 2% of trucks left as noise.</dt>
+        <dd class="display text-4xl">{data.groups.length} groups</dd>
+      </div>
+      <div>
+        <dt class="text-xs text-muted">Workshops found, each within 60 m</dt>
+        <dd class="display text-4xl">{workshops.length} of {workshops.length}</dd>
+      </div>
+    </dl>
+    <ul class="mt-5 grid gap-1.5 text-sm text-muted">
+      <li class="flex items-center gap-2"><svg width="22" height="8" aria-hidden="true"><path d="M1 4h20" class="lane-key" /></svg>A lane the simulated trucks run</li>
+      <li class="flex items-center gap-2"><svg width="22" height="14" aria-hidden="true"><circle cx="11" cy="7" r="6" class="ws-ring" /><circle cx="11" cy="7" r="2.4" class="ws" /></svg>A workshop hub</li>
+    </ul>
+  </div>
+</div>
+
+<style>
+  .land { fill: color-mix(in srgb, var(--ink) 5%, transparent); stroke: var(--line); stroke-width: 1; }
+  .lane { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; opacity: 0.7; }
+  .lane-key { stroke: var(--accent); stroke-width: 2; stroke-linecap: round; }
+  .city { fill: var(--ink); opacity: 0.55; }
+  .ws { fill: var(--ink); }
+  .ws-ring { fill: none; stroke: var(--ink); stroke-width: 1.2; opacity: 0.55; }
+  :global(html.js) [data-india-map] .lane { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 1.4s ease; }
+  :global(html.js .is-in) [data-india-map] .lane, :global(html.js) [data-india-map]:global(.is-in) .lane { stroke-dashoffset: 0; }
+  @media (prefers-reduced-motion: reduce) { :global(html.js) [data-india-map] .lane { stroke-dashoffset: 0; } }
+</style>

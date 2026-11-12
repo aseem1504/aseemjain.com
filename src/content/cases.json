@@ -1,0 +1,80 @@
+[
+  {
+    "id": "postpaid-fastag-credit",
+    "title": "Postpaid FASTag credit",
+    "headline": "₹2.5 Cr ARR in 3 months",
+    "tags": ["Fintech", "0→1", "Credit"],
+    "lens": {
+      "product": "Read 2,000 customer call transcripts and found real demand for credit. Got tech, design, legal, the CFO, the Founder and IDFC First Bank to one launch date. Live in 60 days, ₹2.5 Cr ARR by month 3, NPA around 0.3%.",
+      "strategy": "The vertical was running ₹1 Cr a month short of breakeven. I built the case for a new credit revenue line, won CFO and Founder sign-off on the risk framework, and launched with IDFC First Bank in 60 days.",
+      "consulting": "Ran a full opportunity assessment for a loss-making unit: 2,000 call transcripts, willingness-to-pay tests through telesales, a commercial model with the CFO and legal clearance. Then turned the recommendation into a live product.",
+      "gm": "Five internal teams and one bank partner, one 60-day deadline. Held NPA at 0.3% while scaling. The product became the template for later credit-led revenue.",
+      "ai": "Inside a 150K-vehicle telematics base, I found operators who repay reliably but have uneven cash flow. That behaviour signal became an embedded credit product."
+    }
+  },
+  {
+    "id": "payments-rebuild",
+    "title": "Payments rebuild",
+    "headline": "72% → 87% payment success",
+    "tags": ["Payments", "Infrastructure"],
+    "lens": {
+      "product": "Rebuilt payments under 250K transactions a day (₹12 Cr/day, 10 verticals, 4 platforms). Success-rate-based routing across HDFC, ICICI and Paytm, automatic UPI failover when bank APIs go down, and one-click checkout on the last-used method. Payment time fell from 54s to 27s and uptime rose from 94.3% to 99.2%.",
+      "strategy": "Took a critical vendor from informal to contractual. Negotiated an SLA with Razorpay covering downtime limits, RCA turnaround and penalties, and redesigned routing so the platform no longer depended on any one gateway.",
+      "consulting": "Found that 90% of users never change payment method across three months, so I made checkout one click. A drop-off analysis across app versions pinned one gateway screen as a failure trigger.",
+      "gm": "Owned the payment layer under 10 business verticals and scaled it to ₹12 Cr a day with no extra operations headcount. Fraud ratio halved from about 0.02% to 0.01%.",
+      "ai": "Replaced fixed traffic splits with routing driven by live success rates. Automated UPI redirection cut initiated-transaction failures by about 40%."
+    }
+  },
+  {
+    "id": "toll-anomaly-detection",
+    "title": "Toll anomaly detection",
+    "headline": "45 → 3 days to refund",
+    "tags": ["Anomaly detection", "Automation"],
+    "lens": {
+      "product": "Built a national database of toll plazas and per-vehicle-class prices, then scored every FASTag deduction against it. Wrong charges now create, track and close a dispute ticket on their own. Toll-dispute calls fell 34% against a 7,000+ monthly base.",
+      "strategy": "Turned the biggest driver of support calls into a paid feature. Priced at ₹250 per truck per year for a new revenue line of about ₹50L a year.",
+      "consulting": "Sorted toll tickets into 7 dispute types and found pricing errors were the main cause. Partnered with IDFC First on Quick Dispute Resolution to cut refund time 15x.",
+      "gm": "Moved a pure cost centre into a revenue line backed by a bank partnership.",
+      "ai": "Tuned the threshold toward recall on purpose. A missed anomaly costs the customer money and a support call. A false alarm only costs a needless ticket."
+    }
+  },
+  {
+    "id": "kyc-onboarding-funnel",
+    "title": "KYC onboarding funnel",
+    "headline": "40% → 87% sale-to-activation",
+    "tags": ["Funnel", "Ops", "OCR"],
+    "lens": {
+      "product": "Added session replay, a live error dashboard, a helpline staffed by our three best sales reps, and a dedicated bank contact. Monthly new acquisition rose 27% and helpline calls fell 70% in the first quarter.",
+      "strategy": "Recovered more than half of the customers we were losing between sale and activation, without relaxing a single KYC rule.",
+      "consulting": "The leak was not the user experience. It was how slowly errors were caught and fixed. So I built the visibility and the escalation path first.",
+      "gm": "Set up an escalation path that did not route through one person, plus a direct line to the bank, so the funnel kept working even when I was away.",
+      "ai": "OCR for Aadhaar and PAN with routing by extraction confidence. Low-confidence cases go to a human. Min-KYC drop-offs fell 80%."
+    }
+  },
+  {
+    "id": "bbps-recharges",
+    "title": "Bringing recharges back in-app (BBPS)",
+    "headline": "₹560 Cr volume brought back",
+    "tags": ["Payments", "Growth"],
+    "lens": {
+      "product": "31% of FASTag recharges were going through outside apps. Built multi-bank recharge in-app on NPCI's BBPS rails with IDFC First Bank. Added ₹560 Cr annual volume, ₹1 Cr annual revenue and a 7% cross-sell lift.",
+      "strategy": "Turned a cost leak into a revenue line and removed ₹3.6 Cr a year in outside settlement fees.",
+      "consulting": "Found that 96% of BBPS cost came from one cohort: users who recharged in-app less than 80% of the time. Designed a fix for each segment.",
+      "gm": "Shipped inside NPCI's framework with no compliance-driven rollback.",
+      "ai": "Split 261K users into 5 behaviour cohorts and measured each one separately. Bulk wallet users turned out to be the cheapest to convert."
+    }
+  },
+  {
+    "id": "fraud-scare",
+    "title": "A fraud scare, solved",
+    "headline": "₹75L+ returned to customers",
+    "tags": ["Crisis", "Investigation"],
+    "lens": {
+      "product": "About 1,000 customers saw unauthorised fuel debits and blamed us. I built a case-tracking system and ran a 4-month joint investigation with the bank.",
+      "strategy": "Traced the root cause to a vulnerability on the bank's payment gateway. The company was cleared and the bank upgraded its security.",
+      "consulting": "Went through transaction logs, reconciliation data and gateway records with the bank until the evidence was strong enough to win full refunds.",
+      "gm": "Held the customer relationship through a trust crisis. I gave my personal number to the worst-hit customers while the investigation ran.",
+      "ai": "Transaction-level matching across bank and internal records. The same method later corrected a flagged ₹47L reconciliation gap down to the real ₹21L."
+    }
+  }
+]

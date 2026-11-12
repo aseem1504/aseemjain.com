@@ -1,0 +1,101 @@
+---
+import experience from '../content/experience.json';
+
+const education = [
+  { title: 'B.Tech, Electronics and Communication Engineering', sub: 'Vellore Institute of Technology, Vellore', when: '2014 to 2018' },
+  { title: 'Advanced Certification in Data and Decision Science', sub: 'IIT Delhi', when: '2024 to 2025' },
+  { title: 'Lean Six Sigma Green Belt', sub: 'KPMG', when: '' },
+  { title: 'Competent Leader and Advanced Communicator', sub: 'Toastmasters International', when: '' },
+];
+
+const toolkit = [
+  { label: 'Product', items: ['Discovery', 'Roadmaps', 'Pricing', 'A/B tests', 'Go-to-market'] },
+  { label: 'Data', items: ['Python', 'SQL', 'MongoDB', 'PostgreSQL', 'ML basics'] },
+  { label: 'Tools', items: ['Mixpanel', 'Metabase', 'Firebase', 'UXCam'] },
+];
+---
+
+<section id="story" class="bg-warm py-20 md:py-28" aria-labelledby="story-title">
+  <div class="wrap grid gap-12 md:grid-cols-12">
+    <div class="md:col-span-4">
+      <div class="md:sticky md:top-28">
+        <p class="eyebrow mb-3" data-reveal>Story</p>
+        <h2 id="story-title" class="display text-4xl md:text-5xl" data-reveal>From fixing trackers to owning payments.</h2>
+        <p class="prose-sm print-hide mt-5" data-reveal>
+          I started on the hardware side, fixing GPS trackers on trucks. Then I learned to read the data they sent. Then I started building the products around it. At the time, I was the only person in the company's history to move into product from a non-product role, without an MBA. Each move came from doing the work, not waiting for a title.
+        </p>
+        {/* TODO(aseem): confirm, then uncomment.
+        <p class="prose-sm mt-4">I grew up around my father's roadside assistance business, one of India's earliest. That's where I first saw how much a stuck vehicle costs someone.</p>
+        */}
+      </div>
+    </div>
+
+    <div class="md:col-span-8">
+      <ol class="timeline relative pl-8 md:pl-10" data-timeline>
+        <span class="tl-track" aria-hidden="true"><span class="tl-fill" data-tl-fill></span></span>
+        {experience.map((job) => (
+          <li class="tl-item relative pb-10 last:pb-0" data-tl-item>
+            <span class="tl-dot" aria-hidden="true"></span>
+            <p class="text-sm text-muted">{job.period}<span class="print-hide mx-2 text-line">|</span><span class="print-hide">{job.place}</span></p>
+            <h3 class="mt-1 text-xl font-medium leading-snug">{job.role}</h3>
+            <p class="text-accent-ink font-medium">{job.org}</p>
+            <ul class="mt-3 grid gap-2 text-[0.97rem] text-ink/85">
+              {job.highlights.map((h) => (
+                <li class="relative pl-4 before:absolute before:left-0 before:top-[0.7em] before:h-px before:w-2 before:bg-accent">{h}</li>
+              ))}
+            </ul>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+
+  <div class="wrap mt-16 grid gap-6 md:grid-cols-2">
+    <div class="rounded-2xl border border-line bg-card p-6" data-reveal>
+      <h3 class="eyebrow mb-4">Education and certifications</h3>
+      <ul class="grid gap-4">
+        {education.map((e) => (
+          <li class="flex items-baseline justify-between gap-4">
+            <div>
+              <p class="font-medium leading-snug">{e.title}</p>
+              <p class="text-sm text-muted">{e.sub}</p>
+            </div>
+            {e.when && <p class="shrink-0 text-sm text-muted">{e.when}</p>}
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="print-hide rounded-2xl border border-line bg-card p-6" data-reveal>
+      <h3 class="eyebrow mb-4">Toolkit</h3>
+      <dl class="grid gap-4">
+        {toolkit.map((g) => (
+          <div class="grid grid-cols-[5rem_1fr] items-baseline gap-3">
+            <dt class="text-sm text-muted">{g.label}</dt>
+            <dd class="flex flex-wrap gap-2">
+              {g.items.map((i) => <span class="rounded-full border border-line px-3 py-1 text-sm">{i}</span>)}
+            </dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </div>
+</section>
+
+<style>
+  .tl-track { position: absolute; left: 6px; top: 10px; bottom: 6px; width: 2px; background: var(--line); border-radius: 2px; }
+  @media (min-width: 768px) { .tl-track { left: 8px; } }
+  .tl-fill { position: absolute; inset: 0; background: var(--accent); transform-origin: top; border-radius: 2px; }
+  .tl-dot {
+    position: absolute; left: -32px; top: 6px; width: 14px; height: 14px; border-radius: 999px;
+    background: var(--paper); border: 2px solid var(--accent); transition: transform 360ms cubic-bezier(0.3, 1.6, 0.5, 1), background 200ms;
+  }
+  @media (min-width: 768px) { .tl-dot { left: -40px; } }
+  :global(html.js) .tl-item { opacity: 0; transform: translateY(14px); transition: opacity 500ms ease, transform 500ms ease; }
+  :global(html.js) .tl-item.is-in { opacity: 1; transform: none; }
+  .tl-item.is-in .tl-dot { background: var(--accent); transform: scale(1.12); }
+  @media (prefers-reduced-motion: reduce) {
+    :global(html.js) .tl-item { opacity: 1; transform: none; }
+    .tl-dot { background: var(--accent); }
+  }
+</style>

@@ -1,0 +1,86 @@
+---
+import cases from '../content/cases.json';
+
+const lenses = [
+  { id: 'product', label: 'Product' },
+  { id: 'strategy', label: 'Strategy' },
+  { id: 'consulting', label: 'Consulting' },
+  { id: 'gm', label: 'General Management' },
+  { id: 'ai', label: 'AI & Data' },
+] as const;
+---
+
+<section id="work" class="py-20 md:py-28" aria-labelledby="work-title" data-lens-root data-active-lens="product">
+  <div class="wrap">
+    <p class="eyebrow mb-3" data-reveal>Selected work</p>
+    <h2 id="work-title" class="display text-4xl md:text-6xl" data-reveal>Six problems. Five ways to read them.</h2>
+    <p class="prose-sm print-hide mt-4 text-lg" data-reveal>
+      The numbers stay the same. The story changes with what you are hiring for.
+    </p>
+
+    <div class="lens-bar mt-10" data-reveal>
+      <p id="lens-label" class="mb-3 text-sm font-medium text-muted">What are you hiring for?</p>
+      <div class="relative">
+        <div role="tablist" aria-labelledby="lens-label" class="lens-tabs relative flex flex-wrap gap-x-1 gap-y-2" data-lens-tabs>
+          {lenses.map((l, i) => (
+            <button
+              type="button"
+              role="tab"
+              id={`lens-tab-${l.id}`}
+              aria-selected={i === 0 ? 'true' : 'false'}
+              aria-controls="lens-panel"
+              tabindex={i === 0 ? 0 : -1}
+              data-lens-tab={l.id}
+              class="lens-tab rounded-full px-4 py-2 text-[0.95rem] font-medium"
+            >
+              {l.label}
+            </button>
+          ))}
+          <span class="lens-underline" aria-hidden="true" data-lens-underline></span>
+        </div>
+      </div>
+    </div>
+
+    <div id="lens-panel" role="tabpanel" aria-labelledby="lens-tab-product" class="mt-8 grid gap-5 md:grid-cols-2" data-lens-panel>
+      {cases.map((c) => (
+        <article class="case flex flex-col rounded-2xl border border-line bg-card p-6 md:p-7" data-reveal>
+          <div class="print-hide flex flex-wrap gap-2">
+            {c.tags.map((t) => <span class="rounded-full border border-line px-2.5 py-0.5 text-xs text-muted">{t}</span>)}
+          </div>
+          <h3 class="mt-4 text-sm font-medium uppercase tracking-[0.1em] text-muted">{c.title}</h3>
+          <p class="display mt-1 text-[2rem] leading-[1.05] text-accent-ink md:text-[2.4rem]">{c.headline}</p>
+          <div class="case-body mt-4 text-[0.98rem] leading-relaxed text-ink/85" data-lens-body>
+            {lenses.map((l) => (
+              <p data-lens={l.id}>{c.lens[l.id]}</p>
+            ))}
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <p class="print-hide mt-8 text-sm text-muted" data-reveal>
+      <a class="font-medium text-accent-ink underline decoration-line underline-offset-4 hover:decoration-accent" href="/Aseem_Jain_CV.pdf" download>More in my CV →</a>
+    </p>
+  </div>
+</section>
+
+<style>
+  .lens-tab { color: var(--muted); transition: color 160ms ease; position: relative; z-index: 1; }
+  .lens-tab:hover { color: var(--ink); }
+  .lens-tab[aria-selected='true'] { color: var(--ink); }
+  .lens-underline {
+    position: absolute; left: 0; bottom: -2px; height: 2px; width: 0; background: var(--accent);
+    transform: translateX(0); transition: transform 320ms cubic-bezier(0.3, 0.7, 0.2, 1), width 320ms cubic-bezier(0.3, 0.7, 0.2, 1);
+  }
+  .lens-tabs { border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+  /* Show only the active lens. Product is the default, so no-JS visitors still read a full story. */
+  .case-body p { display: none; }
+  [data-active-lens='product'] .case-body p[data-lens='product'],
+  [data-active-lens='strategy'] .case-body p[data-lens='strategy'],
+  [data-active-lens='consulting'] .case-body p[data-lens='consulting'],
+  [data-active-lens='gm'] .case-body p[data-lens='gm'],
+  [data-active-lens='ai'] .case-body p[data-lens='ai'] { display: block; }
+  .case-body { transition: opacity 160ms ease, transform 160ms ease; }
+  .case-body.is-swapping { opacity: 0; transform: translateY(6px); }
+  :global(html:not(.js)) .lens-bar { display: none; }
+</style>

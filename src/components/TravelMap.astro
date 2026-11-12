@@ -1,0 +1,92 @@
+---
+import { feature } from 'topojson-client';
+import { geoMercator, geoPath, geoContains } from 'd3-geo';
+import world from 'world-atlas/land-110m.json';
+import data from '../content/places.json';
+
+// Region shown: Europe to Southeast Asia.
+// Corner points rather than a polygon: d3 reads a polygon's winding order as inside or outside.
+const region = { type: 'MultiPoint', coordinates: [[-14, -9], [142, -9], [142, 62], [-14, 62]] } as any;
+const W = 960;
+const projection = geoMercator().fitWidth(W, region);
+const [[, y0], [, y1]] = geoPath(projection).bounds(region);
+const H = Math.ceil(y1 - y0) + 2;
+projection.translate([projection.translate()[0], projection.translate()[1] - y0 + 1]);
+
+const land = feature(world as any, (world as any).objects.land) as any;
+
+// A dot-matrix landmass: sample a grid in screen space and keep the points that fall on land.
+const STEP = 8;
+let dots = '';
+for (let y = STEP / 2; y < H; y += STEP) {
+  for (let x = STEP / 2; x < W; x += STEP) {
+    const ll = projection.invert!([x, y]);
+    if (ll && geoContains(land, ll)) dots += `M${x} ${y}h0`;
+  }
+}
+
+const pt = (lat: number, lon: number) => projection([lon, lat]) as [number, number];
+const home = pt(data.home.lat, data.home.lon);
+
+// A curved route from home to each place, drawn in the order India, Southeast Asia, Europe.
+function arc(a: [number, number], b: [number, number]) {
+  const mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2;
+  const len = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1;
+  const lift = Math.min(110, len * 0.28); // bow every route upward
+  return `M${a[0].toFixed(1)} ${a[1].toFixed(1)} Q${mx.toFixed(1)} ${(my - lift).toFixed(1)} ${b[0].toFixed(1)} ${b[1].toFixed(1)}`;
+}
+const order = ['india', 'sea', 'europe'];
+const places = [...data.places]
+  .sort((a, b) => order.indexOf(a.group) - order.indexOf(b.group))
+  .map((p) => ({ ...p, xy: pt(p.lat, p.lon) }));
+
+const cities = places.length;
+const countries = new Set(places.map((p) => p.country)).size;
+const groups = order.map((id) => ({ id, label: data.groups.find((g) => g.id === id)!.label, items: places.filter((p) => p.group === id) }));
+const slug = (s: string) => s.toLowerCase().replace(/[^a-z]+/g, '-');
+---
+
+<div data-travel>
+  <svg viewBox={`0 0 ${W} ${H}`} class="h-auto w-full" role="img"
+    aria-label={`Map from Europe to Southeast Asia. Routes from Ahmedabad to ${cities} places across ${countries} countries and regions.`}>
+    <path d={dots} class="land" />
+    {places.map((p) => <path d={arc(home, p.xy)} class="route" data-group={p.group} pathLength="1" />)}
+    <circle cx={home[0]} cy={home[1]} r="6" class="home" />
+    {places.map((p) => (
+      <g class="pin" data-group={p.group} data-place={slug(p.name)}>
+        <circle cx={p.xy[0]} cy={p.xy[1]} r="9" class="halo" />
+        <circle cx={p.xy[0]} cy={p.xy[1]} r="3.6" class="spot"><title>{p.name}</title></circle>
+      </g>
+    ))}
+  </svg>
+
+  <p class="mt-4 text-sm text-muted">
+    <span class="display text-3xl text-ink" data-count data-to={cities}>{cities}</span> cities,
+    <span class="display text-3xl text-ink" data-count data-to={countries}>{countries}</span> countries and regions so far. Routes start from Ahmedabad.
+  </p>
+  {/* TODO(aseem): list the other Indian states and cities you have visited in src/content/places.json. */}
+
+  <div class="mt-6 grid gap-5 sm:grid-cols-3">
+    {groups.map((g) => (
+      <div>
+        <h4 class="eyebrow mb-2">{g.label}</h4>
+        <ul class="flex flex-wrap gap-2">
+          {g.items.map((p) => (
+            <li><button type="button" class="chip" data-chip={slug(p.name)}>{p.name}</button></li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  .land { fill: none; stroke: color-mix(in srgb, var(--ink) 18%, transparent); stroke-width: 3.2; stroke-linecap: round; }
+  .route { fill: none; stroke: var(--accent); stroke-width: 1.6; stroke-linecap: round; opacity: 0.7; }
+  .home { fill: var(--ink); }
+  .halo { fill: var(--accent); opacity: 0; transition: opacity 200ms; }
+  .spot { fill: var(--accent); stroke: var(--paper); stroke-width: 1.4; }
+  .pin.is-hot .halo { opacity: 0.28; }
+  .chip { font-size: 0.82rem; padding: 0.3rem 0.7rem; border-radius: 999px; border: 1px solid var(--line); background: var(--card); transition: border-color 160ms, background 160ms; }
+  .chip:hover, .chip:focus-visible { border-color: var(--accent); }
+</style>

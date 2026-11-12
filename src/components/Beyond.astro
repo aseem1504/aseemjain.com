@@ -1,0 +1,113 @@
+---
+import { getCollection, render } from 'astro:content';
+import TravelMap from './TravelMap.astro';
+import Photos from './Photos.astro';
+import speakers from '../content/speakers.json';
+
+// TODO(aseem): paste a YouTube video id here when the tabla video is ready, for example 'dQw4w9WgXcQ'.
+const MUSIC_VIDEO_ID = '';
+
+const poems = (await getCollection('poems')).sort((a, b) => a.data.order - b.data.order);
+const renderedPoems = await Promise.all(poems.map(async (p) => ({ p, Content: (await render(p)).Content })));
+
+// Teental, a 16-beat tabla cycle, drawn as bars.
+const beats = [10, 7, 7, 9, 10, 7, 7, 9, 10, 4, 4, 5, 5, 7, 7, 9];
+---
+
+<section id="beyond" class="bg-warm py-20 md:py-28" aria-labelledby="beyond-title">
+  <div class="wrap">
+    <p class="eyebrow mb-3" data-reveal>Beyond work</p>
+    <h2 id="beyond-title" class="display text-4xl md:text-6xl" data-reveal>Off the clock.</h2>
+
+    <!-- Travel -->
+    <div class="mt-16 grid gap-8 md:grid-cols-12 md:gap-12" id="travel">
+      <div class="md:col-span-4" data-reveal>
+        <h3 class="display text-3xl md:text-4xl">Travel</h3>
+        <p class="prose-sm mt-3">Most of India, including Ladakh, then Southeast Asia and Europe. I like cities I can walk across and places that are quiet at dawn.</p>
+      </div>
+      <div class="md:col-span-8" data-reveal><TravelMap /></div>
+    </div>
+
+    <!-- Photos -->
+    <div class="mt-20 grid gap-8 md:grid-cols-12 md:gap-12" id="photos">
+      <div class="md:col-span-4" data-reveal>
+        <h3 class="display text-3xl md:text-4xl">Photos</h3>
+        <p class="prose-sm mt-3">A few from the road. Hover over a tile marked Live, or scroll it into view on a phone, and it moves for a moment.</p>
+        <a class="btn mt-5" href="https://www.instagram.com/aseemjain1504" target="_blank" rel="noopener">More on Instagram ↗</a>
+      </div>
+      <div class="md:col-span-8"><Photos /></div>
+    </div>
+
+    <!-- Music -->
+    <div class="mt-20 grid gap-8 md:grid-cols-12 md:gap-12" id="music">
+      <div class="md:col-span-4" data-reveal>
+        <h3 class="display text-3xl md:text-4xl">Music</h3>
+        <p class="prose-sm mt-3">I play tabla. 3-year diploma from Prayag Sangeet Samiti.</p>
+      </div>
+      <div class="md:col-span-8" data-reveal>
+        {MUSIC_VIDEO_ID ? (
+          <div class="aspect-video overflow-hidden rounded-2xl border border-line">
+            <iframe class="h-full w-full" src={`https://www.youtube-nocookie.com/embed/${MUSIC_VIDEO_ID}`} title="Aseem playing tabla" loading="lazy" allow="accelerometer; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+          </div>
+        ) : (
+          <div class="grid aspect-video place-items-center rounded-2xl border border-line bg-card p-6 text-center">
+            <div>
+              <svg class="mx-auto mb-5 h-14 w-52 text-accent" viewBox="0 0 160 40" fill="currentColor" aria-hidden="true">
+                {beats.map((h, i) => <rect class="beat" x={i * 10 + 2} y={20 - h * 1.8} width="5" height={h * 3.6} rx="2.5" style={`animation-delay:${i * 90}ms`} />)}
+              </svg>
+              <p class="display text-2xl">Teental, 16 beats</p>
+              <p class="mt-1 text-sm text-muted">A recording is on its way.</p>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+
+    <!-- Poetry -->
+    <div class="mt-20 grid gap-8 md:grid-cols-12 md:gap-12" id="poetry">
+      <div class="md:col-span-4" data-reveal>
+        <h3 class="display text-3xl md:text-4xl">Poetry</h3>
+        <p class="prose-sm mt-3">I write in Hindi and English.</p>
+      </div>
+      {renderedPoems.length > 0 && (
+        <div class="grid gap-5 md:col-span-8 sm:grid-cols-2">
+          {renderedPoems.map(({ p, Content }) => (
+            <article class="rounded-2xl border border-line bg-card p-6" data-reveal>
+              <h4 class={`text-xl ${p.data.lang === 'hi' ? 'font-deva' : 'display'}`} lang={p.data.lang}>{p.data.title}</h4>
+              {p.data.english && <p class="mt-1 text-sm italic text-muted">{p.data.english}</p>}
+              <div class={`poem mt-4 ${p.data.lang === 'hi' ? 'font-deva' : 'font-serif'}`} lang={p.data.lang}><Content /></div>
+            </article>
+          ))}
+        </div>
+      )}
+      {/* TODO(aseem): paste 2 or 3 poems from Google Keep into src/content/poems/*.md. Until then only the one-line intro shows. */}
+    </div>
+
+    <!-- Speaker Series -->
+    <div class="mt-20 grid gap-8 md:grid-cols-12 md:gap-12" id="speakers">
+      <div class="md:col-span-4" data-reveal>
+        <h3 class="display text-3xl md:text-4xl">Speaker Series</h3>
+        <p class="prose-sm mt-3">As Outreach Cell head at the IIMA Speaker Series, I help bring industry leaders to campus.</p>
+      </div>
+      <ul class="grid gap-5 md:col-span-8 sm:grid-cols-2">
+        {speakers.map((s) => (
+          <li class="rounded-2xl border border-line bg-card p-6" data-reveal>
+            <p class="eyebrow mb-2">Featured speaker</p>
+            <h4 class="display text-2xl">{s.name}</h4>
+            {(s.title || s.company) && <p class="mt-1 text-muted">{[s.title, s.company].filter(Boolean).join(', ')}</p>}
+            {s.date && <p class="mt-1 text-sm text-muted">{s.date}</p>}
+            {s.line && <p class="mt-3 text-[0.97rem] text-ink/85">{s.line}</p>}
+            {s.link && <a class="mt-4 inline-block text-sm font-medium text-accent-ink underline decoration-line underline-offset-4 hover:decoration-accent" href={s.link} target="_blank" rel="noopener">See the LinkedIn post ↗</a>}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .beat { transform-box: fill-box; transform-origin: center; animation: beat 1.8s ease-in-out infinite; }
+  @keyframes beat { 0%, 100% { transform: scaleY(0.55); } 50% { transform: scaleY(1); } }
+  .poem :global(p) { margin-top: 0.4rem; line-height: 1.8; }
+  :global(.font-deva) { font-family: var(--font-deva); }
+</style>

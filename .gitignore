@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.astro/
+.DS_Store
+.env
+*.log
+# Source media and CV text live outside the repo on purpose.
+media-src/
+master_cv.txt
+
+# Held back until the phone-number question is settled: the CV PDF has a mobile number and this repo is public.
+# Remove this line, then `git add public/Aseem_Jain_CV.pdf`, when you have decided.
+public/Aseem_Jain_CV.pdf

@@ -1,0 +1,32 @@
+---
+const email = 'x26aseemj@iima.ac.in';
+---
+
+<section id="contact" class="py-24 md:py-32" aria-labelledby="contact-title">
+  <div class="wrap text-center">
+    <p class="eyebrow mb-4" data-reveal>Contact</p>
+    <h2 id="contact-title" class="display text-[clamp(3rem,9vw,7rem)]" data-reveal>Let's talk.</h2>
+    <p class="mx-auto mt-5 max-w-xl text-lg text-muted" data-reveal>
+      I'm exploring product, strategy and consulting roles for 2027.
+    </p>
+
+    <div class="mt-10 flex flex-col items-center gap-4" data-reveal>
+      <a href={`mailto:${email}`} class="display break-all text-[clamp(1.5rem,4.5vw,3rem)] text-accent-ink underline decoration-line decoration-2 underline-offset-8 transition-colors hover:decoration-accent">
+        {email}
+      </a>
+      <button type="button" class="btn no-print" data-copy={email} aria-label="Copy email address">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 012-2h9"/></svg>
+        <span data-copy-label>Copy email</span>
+      </button>
+    </div>
+
+    <p class="mt-3 hidden text-sm print:block">linkedin.com/in/aseemjain1504 · github.com/aseem1504 · instagram.com/aseemjain1504 · aseemjain.com</p>
+
+    <div class="mt-10 flex flex-wrap items-center justify-center gap-3 no-print" data-reveal>
+      <a class="btn btn-primary" href="/Aseem_Jain_CV.pdf" download>Download CV</a>
+      <a class="btn" href="https://www.linkedin.com/in/aseemjain1504" target="_blank" rel="noopener">LinkedIn ↗</a>
+      <a class="btn" href="https://github.com/aseem1504" target="_blank" rel="noopener">GitHub ↗</a>
+      <a class="btn" href="https://www.instagram.com/aseemjain1504" target="_blank" rel="noopener">Instagram ↗</a>
+    </div>
+  </div>
+</section>
