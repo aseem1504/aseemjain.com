@@ -10,32 +10,27 @@ const fonts = [
   { name: 'Instrument Serif', data: font('instrument-serif-latin-400-italic.woff'), weight: 400, style: 'italic' },
 ];
 
-const C = { paper: '#f6f3ee', ink: '#1b1a17', muted: '#5d594f', line: '#ddd5c8', accent: '#8fd3bd', accentInk: '#27705f', onAccent: '#10302a' };
+// Dark theme, mint accent.
+const C = { paper: '#0c1210', ink: '#eaf2ee', muted: '#9db0a8', line: '#2a3a34', accent: '#8fd3bd', accentInk: '#9fe0cb', onAccent: '#0c1f19' };
 const el = (type, style, children) => ({ type, props: { style, children } });
-const word = (t, extra = {}) => el('span', { marginRight: 16, ...extra }, t);
-
-const headline = [
-  ...['I', 'build', 'products', 'where'].map((w) => word(w)),
-  ...['money,', 'data'].map((w) => word(w, { fontStyle: 'italic', color: C.accentInk })),
-  ...['and', 'trucks', 'meet.'].map((w) => word(w)),
-];
 
 const og = el('div', {
   display: 'flex', flexDirection: 'column', justifyContent: 'space-between', width: 1200, height: 630,
-  background: C.paper, padding: '64px 72px', fontFamily: 'Instrument Serif', color: C.ink,
+  background: C.paper, padding: '58px 72px', fontFamily: 'Instrument Serif', color: C.ink,
 }, [
   el('div', { display: 'flex', alignItems: 'center', justifyContent: 'space-between' }, [
-    el('div', { display: 'flex', alignItems: 'center', justifyContent: 'center', width: 88, height: 88, borderRadius: 22, background: C.accent, color: C.onAccent, fontSize: 58 }, 'aj.'),
+    el('div', { display: 'flex', alignItems: 'center', justifyContent: 'center', width: 80, height: 80, borderRadius: 20, background: C.accent, color: C.onAccent, fontSize: 54 }, 'aj.'),
     el('div', { fontSize: 32, color: C.muted }, 'aseemjain.com'),
   ]),
   el('div', { display: 'flex', flexDirection: 'column' }, [
-    el('div', { fontSize: 150, lineHeight: 1, letterSpacing: -3 }, 'Aseem Jain'),
-    el('div', { display: 'flex', flexWrap: 'wrap', fontSize: 53, lineHeight: 1.12, marginTop: 20, maxWidth: 1080 }, headline),
+    el('div', { fontSize: 52, fontStyle: 'italic', color: C.accentInk, lineHeight: 1.1 }, 'Hi, I am'),
+    el('div', { fontSize: 178, lineHeight: 0.98, letterSpacing: -5 }, 'Aseem Jain'),
+    el('div', { fontSize: 40, color: C.muted, lineHeight: 1.25, marginTop: 14, maxWidth: 1000 }, 'and I build and scale products with a customer and data first approach.'),
   ]),
-  el('div', { display: 'flex', fontSize: 30, color: C.muted }, [
+  el('div', { display: 'flex', fontSize: 28, color: C.muted }, [
     // Instrument Serif has no rupee glyph, so the image spells it out.
     ...['INR 3,600 Cr FASTag volume', '1.5M vehicles', '72% to 87% payment success'].map((t) =>
-      el('div', { display: 'flex', border: `2px solid ${C.line}`, borderRadius: 999, padding: '8px 24px', marginRight: 16 }, t)),
+      el('div', { display: 'flex', border: `2px solid ${C.line}`, borderRadius: 999, padding: '7px 22px', marginRight: 16 }, t)),
   ]),
 ]);
 

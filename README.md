@@ -28,8 +28,8 @@ All text lives in `src/content/`, so you rarely need to touch a component.
 | The tabla video | Set `MUSIC_VIDEO_ID` at the top of `src/components/Beyond.astro` |
 | A logo on a Credentials tile | Save the file as `src/assets/logos/<id>.svg` (or png), where the id is in `src/content/credentials.json`, for example `iima.svg`. Until then a monogram shows |
 | The CV | Replace `public/Aseem_Jain_CV.pdf` |
-| The headline | `src/components/Hero.astro` (options A, B and C are in the comment) |
-| The accent colour | `--accent` and `--accent-ink` in `src/styles/global.css` |
+| The welcome ("Hi, I am Aseem Jain" and the line under it) | `src/components/Hero.astro` |
+| The colours | The site is dark only. All colours are tokens at the top of `src/styles/global.css`: `--paper`, `--surface-1`, `--surface-2`, `--ink`, `--muted`, and the one accent `--accent` (mint) |
 
 Lens links work as shareable URLs: `https://aseemjain.com/?lens=strategy`, `consulting`, `gm`, `ai`.
 

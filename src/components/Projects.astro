@@ -9,11 +9,13 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
 
 <section id="projects" class="sheet bg-paper pb-24 pt-20 md:pb-36 md:pt-28" aria-labelledby="projects-title">
   <div class="wrap">
-    <p class="eyebrow mb-3" data-reveal>Projects</p>
-    <h2 id="projects-title" class="display text-[clamp(2.6rem,6.5vw,5.5rem)]" data-split>I still write code.</h2>
+    <div class="section-head">
+    <p class="eyebrow" data-reveal>Projects</p>
+    <h2 id="projects-title" class="h2" data-split>I still write code.</h2>
     <p class="prose-sm mt-4 text-lg" data-reveal>
       Small, honest rebuilds of problems I solved at work, on synthetic or public data.
     </p>
+    </div>
 
     <div class="mt-14 grid gap-x-12 gap-y-16 md:grid-cols-2">
       {projects.map((p, i) => <ProjectCard project={p} index={i} />)}

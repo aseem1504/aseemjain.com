@@ -32,43 +32,23 @@
   --color-accent: var(--accent);
   --color-accent-ink: var(--accent-ink);
   --color-on-accent: var(--on-accent);
-  --color-sun: var(--sun);
-  --color-sun-ink: var(--sun-ink);
-  --color-teal-wash: var(--teal-wash);
-  --color-sun-wash: var(--sun-wash);
+  --color-surface-1: var(--surface-1);
+  --color-surface-2: var(--surface-2);
 }
 
-/* Teal accent. Light: accent fills, accent-ink for small text (passes AA on paper). */
+/* Dark only. Near-black with a green tint, mint as the one accent. */
 :root {
-  --paper: #f6f3ee;
-  --ink: #1b1a17;
-  --muted: #5d594f;
-  --line: #ddd5c8;
-  --card: #ffffff;
-  --warm: #efe8dc;
+  --paper: #0c1210;
+  --surface-1: #111a17;
+  --surface-2: #16221e;
+  --card: #15201c;
+  --warm: #131d19;
+  --ink: #eaf2ee;
+  --muted: #9db0a8;
+  --line: #26342e;
   --accent: #8fd3bd;
-  --accent-ink: #27705f;
-  --on-accent: #10302a;
-  --sun: #eaa862;
-  --sun-ink: #9a5410;
-  --teal-wash: #e8f4ef;
-  --sun-wash: #fbeedd;
-  color-scheme: light;
-}
-html[data-theme="dark"] {
-  --paper: #11120f;
-  --ink: #eeeae2;
-  --muted: #a8a398;
-  --line: #2b2c27;
-  --card: #191a16;
-  --warm: #171815;
-  --accent: #9bdcc8;
-  --accent-ink: #9bdcc8;
-  --on-accent: #0d1f1a;
-  --sun: #f0a24e;
-  --sun-ink: #f5b66f;
-  --teal-wash: #12211f;
-  --sun-wash: #261e13;
+  --accent-ink: #9fe0cb;
+  --on-accent: #0c1f19;
   color-scheme: dark;
 }
 
@@ -77,15 +57,22 @@ body {
   background: var(--paper);
   color: var(--ink);
   font-family: var(--font-sans);
-  font-size: 1rem;
-  line-height: 1.65;
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  font-optical-sizing: auto;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 ::selection { background: var(--accent); color: var(--on-accent); }
 
 .display { font-family: var(--font-serif); font-weight: 400; letter-spacing: -0.022em; line-height: 1.02; }
-.eyebrow { font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--accent-ink); }
+/* Type scale. Display serif for headings, Inter for everything else. */
+.eyebrow { font-size: 0.75rem; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600; color: var(--accent-ink); }
+.h2 { font-family: var(--font-serif); font-weight: 400; font-size: clamp(2.5rem, 5.4vw, 4.4rem); line-height: 1.04; letter-spacing: -0.024em; }
+.section-head { max-width: 46rem; margin: 0 auto 3.5rem; text-align: center; }
+.section-head .eyebrow { margin-bottom: 0.9rem; }
+.section-head .prose-sm { margin: 1.1rem auto 0; max-width: 34rem; font-size: 1.15rem; line-height: 1.6; }
+.tnum { font-variant-numeric: tabular-nums; }
 .wrap { width: min(100% - 2.5rem, 72rem); margin-inline: auto; }
 .prose-sm { color: var(--muted); max-width: 62ch; }
 
@@ -99,7 +86,7 @@ h1, h2, h3 { text-wrap: balance; }
 p { text-wrap: pretty; }
 
 /* Sections stack like sheets of paper, each sliding over the one before. */
-.sheet { position: relative; border-radius: 2.75rem 2.75rem 0 0; margin-top: -2.75rem; }
+.sheet { position: relative; border-radius: 2.75rem 2.75rem 0 0; margin-top: -2.75rem; box-shadow: 0 -1px 0 color-mix(in srgb, var(--accent) 16%, transparent); }
 @media (max-width: 640px) { .sheet { border-radius: 1.75rem 1.75rem 0 0; margin-top: -1.75rem; } }
 
 /* Long-form text on project pages */
@@ -119,15 +106,7 @@ p { text-wrap: pretty; }
 html[data-theme='dark'] .astro-code, html[data-theme='dark'] .astro-code span { color: var(--shiki-dark) !important; background-color: var(--shiki-dark-bg) !important; }
 
 /* Scroll progress bar */
-.progress { position: fixed; inset: 0 0 auto 0; height: 3px; z-index: 60; background: linear-gradient(90deg, var(--accent), var(--sun)); transform: scaleX(0); transform-origin: left; pointer-events: none; }
-
-/* Marquee ticker */
-.marquee { overflow: hidden; border-block: 1px solid color-mix(in srgb, var(--ink) 14%, transparent); background: var(--paper); }
-.marquee-track { display: flex; width: max-content; animation: marquee 38s linear infinite; }
-.marquee:hover .marquee-track { animation-play-state: paused; }
-.marquee-track span { font-family: var(--font-serif); font-size: clamp(1.6rem, 4vw, 2.6rem); padding: 0.9rem 0; white-space: nowrap; display: inline-flex; align-items: center; }
-.marquee-track span::after { content: ""; width: 0.55rem; height: 0.55rem; margin-inline: 1.6rem; border-radius: 50%; background: var(--sun); }
-@keyframes marquee { to { transform: translateX(-50%); } }
+.progress { position: fixed; inset: 0 0 auto 0; height: 3px; z-index: 60; background: linear-gradient(90deg, var(--accent), color-mix(in srgb, var(--accent) 35%, white)); transform: scaleX(0); transform-origin: left; pointer-events: none; }
 
 /* Word-by-word heading reveal (set up in motion.ts) */
 .w-mask { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.08em; margin-bottom: -0.08em; }
@@ -154,7 +133,6 @@ html.js [data-reveal] { opacity: 0; transform: translateY(14px); transition: opa
 html.js [data-reveal].is-in { opacity: 1; transform: none; }
 
 @media (prefers-reduced-motion: reduce) {
-  .marquee-track { animation: none; }
   .progress { display: none; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
@@ -165,15 +143,18 @@ html.js [data-reveal].is-in { opacity: 1; transform: none; }
 @media print {
   @page { size: A4; margin: 12mm; }
   /* Beat the dark theme's selector, so paper is always white. */
-  :root, html[data-theme='dark'], html[data-theme='light'] { --paper: #fff; --ink: #000; --muted: #333; --line: #bbb; --card: #fff; --warm: #fff; --accent: #0f5d55; --accent-ink: #0f5d55; --on-accent: #fff; }
+  :root { --surface-1: #fff; --surface-2: #fff; --paper: #fff; --ink: #000; --muted: #333; --line: #bbb; --card: #fff; --warm: #fff; --accent: #0f5d55; --accent-ink: #0f5d55; --on-accent: #fff; }
   html { font-size: 11px; }
   body { font-size: 9pt; line-height: 1.35; }
-  nav, .no-print, .print-hide, .marquee, .progress, .blob, .sun-disc, video, #projects, #beyond, footer, .skip-link, [data-lens-tabs], .lens-bar { display: none !important; }
+  nav, .no-print, .print-hide, .progress, .glow, .stage, video, #projects, #beyond, footer, .skip-link, [data-lens-tabs], .lens-bar { display: none !important; }
   .wrap { width: 100% !important; margin: 0 !important; }
   section { padding-block: 0.5rem !important; background: none !important; break-inside: avoid; }
   a { color: inherit; text-decoration: none; }
   html.js [data-reveal], .fade-up, html.js .tl-item { opacity: 1 !important; transform: none !important; animation: none !important; }
-  h1 { font-size: 26pt !important; margin: 0 !important; }
+  h1 { margin: 0 !important; }
+  .name { font-size: 34pt !important; line-height: 1 !important; }
+  .hi { font-size: 12pt !important; }
+  .lede { font-size: 10.5pt !important; margin: 0.3rem auto 0 !important; }
   #work h2, #work .eyebrow { display: none !important; }
   #story ul.grid.gap-4 li p:last-child { display: none; }
   h1 .line > span { animation: none !important; transform: none !important; }

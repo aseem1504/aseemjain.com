@@ -5,15 +5,6 @@ const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const $ = <T extends Element = HTMLElement>(s: string, r: ParentNode = document) => r.querySelector<T>(s);
 const $$ = <T extends Element = HTMLElement>(s: string, r: ParentNode = document) => [...r.querySelectorAll<T>(s)];
 
-/* ---------- Theme ---------- */
-$$('[data-theme-toggle]').forEach((btn) =>
-  btn.addEventListener('click', () => {
-    const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    try { localStorage.setItem('theme', next); } catch {}
-  }),
-);
-
 /* ---------- Nav ---------- */
 const nav = $('#nav');
 const onScroll = () => nav?.classList.toggle('is-scrolled', scrollY > 8);
