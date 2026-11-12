@@ -11,7 +11,7 @@ const fonts = [
 ];
 
 // Dark theme, mint accent.
-const C = { paper: '#0c1210', ink: '#eaf2ee', muted: '#9db0a8', line: '#2a3a34', accent: '#8fd3bd', accentInk: '#9fe0cb', onAccent: '#0c1f19' };
+const C = { paper: '#09090b', ink: '#f4f4f5', muted: '#a1a1aa', line: '#2a2a31', accent: '#8fd3bd', accentInk: '#9fe0cb', onAccent: '#0b1812' };
 const el = (type, style, children) => ({ type, props: { style, children } });
 
 const og = el('div', {

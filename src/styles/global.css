@@ -36,19 +36,19 @@
   --color-surface-2: var(--surface-2);
 }
 
-/* Dark only. Near-black with a green tint, mint as the one accent. */
+/* Dark only. Neutral near-black, mint as the one accent. */
 :root {
-  --paper: #0c1210;
-  --surface-1: #111a17;
-  --surface-2: #16221e;
-  --card: #15201c;
-  --warm: #131d19;
-  --ink: #eaf2ee;
-  --muted: #9db0a8;
-  --line: #26342e;
+  --paper: #09090b;
+  --surface-1: #101013;
+  --surface-2: #15151a;
+  --card: #131317;
+  --warm: #111115;
+  --ink: #f4f4f5;
+  --muted: #a1a1aa;
+  --line: #26262d;
   --accent: #8fd3bd;
   --accent-ink: #9fe0cb;
-  --on-accent: #0c1f19;
+  --on-accent: #0b1812;
   color-scheme: dark;
 }
 

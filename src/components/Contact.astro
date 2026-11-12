@@ -2,7 +2,7 @@
 const email = 'x26aseemj@iima.ac.in';
 ---
 
-<section id="contact" class="sheet bg-accent pb-28 pt-24 text-on-accent md:pb-40 md:pt-32" aria-labelledby="contact-title">
+<section id="contact" class="sheet contact bg-surface-2 pb-28 pt-24 md:pb-40 md:pt-32" aria-labelledby="contact-title">
   <div class="wrap text-center">
     <p class="eyebrow mb-4" data-reveal>Contact</p>
     <h2 id="contact-title" class="display text-[clamp(3.4rem,11vw,9rem)]" data-split>Let's talk.</h2>
@@ -11,7 +11,7 @@ const email = 'x26aseemj@iima.ac.in';
     </p>
 
     <div class="mt-10 flex flex-col items-center gap-4" data-reveal>
-      <a href={`mailto:${email}`} class="display break-all text-[clamp(1.5rem,4.5vw,3rem)] underline decoration-on-accent/40 decoration-2 underline-offset-8 transition-colors hover:decoration-on-accent">
+      <a href={`mailto:${email}`} class="display break-all text-[clamp(1.5rem,4.5vw,3rem)] text-accent-ink underline decoration-accent/40 decoration-2 underline-offset-8 transition-colors hover:decoration-accent">
         {email}
       </a>
       <button type="button" class="btn no-print" data-copy={email} aria-label="Copy email address">
@@ -32,10 +32,10 @@ const email = 'x26aseemj@iima.ac.in';
 </section>
 
 <style>
-  #contact .eyebrow { color: var(--on-accent); }
-  /* Outline buttons on the teal block, then the primary one filled with paper. Order matters. */
-  #contact :global(.btn) { border-color: color-mix(in srgb, var(--on-accent) 45%, transparent); background: transparent; color: var(--on-accent); }
-  #contact :global(.btn:hover) { border-color: var(--on-accent); }
-  #contact :global(.btn.btn-primary) { background: var(--paper); color: var(--accent-ink); border-color: var(--paper); }
-  #contact :global(.btn.btn-primary:hover) { background: var(--card); border-color: var(--card); }
+  .contact { overflow: hidden; }
+  .contact::before {
+    content: ""; position: absolute; left: 50%; top: -10rem; width: min(110vw, 60rem); aspect-ratio: 1; translate: -50% 0; pointer-events: none;
+    background: radial-gradient(circle, color-mix(in srgb, var(--accent) 15%, transparent), transparent 62%);
+  }
+  .contact > :global(*) { position: relative; }
 </style>
