@@ -12,5 +12,4 @@ Logos are shown small and unaltered, as credentials. They belong to their owners
 | wheelseye.svg | wheelseye.com, site header logo | |
 | pcl-health.png | pcl-health.com, "PCL_Health_logo_mark_transparent.png" (mark only) | |
 
-No logo file was found for Prayag Sangeet Samiti, so its tile shows a monogram.
-Add a file named after the id in `src/content/credentials.json` to replace any monogram.
+| prayag-sangeet-samiti.png | Provided by Aseem (seal image), black corners cut out | Contains a small "geetasaar.com" watermark; replace with a clean copy if you have one |
