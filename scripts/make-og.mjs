@@ -25,7 +25,7 @@ const og = el('div', {
   el('div', { display: 'flex', flexDirection: 'column' }, [
     el('div', { fontSize: 52, fontStyle: 'italic', color: C.accentInk, lineHeight: 1.1 }, 'Hi, I am'),
     el('div', { fontSize: 178, lineHeight: 0.98, letterSpacing: -5 }, 'Aseem Jain'),
-    el('div', { fontSize: 40, color: C.muted, lineHeight: 1.25, marginTop: 14, maxWidth: 1000 }, 'and I build and scale products with a customer and data first approach.'),
+    el('div', { fontSize: 40, color: C.muted, lineHeight: 1.25, marginTop: 14, maxWidth: 1000 }, 'I build products where money, data and customer insights meet.'),
   ]),
   el('div', { display: 'flex', fontSize: 28, color: C.muted }, [
     // Instrument Serif has no rupee glyph, so the image spells it out.
