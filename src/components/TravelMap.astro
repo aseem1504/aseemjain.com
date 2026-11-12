@@ -40,15 +40,21 @@ const places = [...data.places]
   .sort((a, b) => order.indexOf(a.group) - order.indexOf(b.group))
   .map((p) => ({ ...p, xy: pt(p.lat, p.lon) }));
 
-const cities = places.length;
-const countries = new Set(places.map((p) => p.country)).size;
-const groups = order.map((id) => ({ id, label: data.groups.find((g) => g.id === id)!.label, items: places.filter((p) => p.group === id) }));
+// Abroad: cities and countries. India: states and union territories, listed by name.
+const abroad = places.filter((p) => p.group !== 'india');
+const cities = abroad.length;
+const countries = new Set(abroad.map((p) => p.country)).size;
+const states = data.indiaStates.length;
+const uts = data.indiaUTs.length;
+// Delhi and Ladakh also sit on the map, so their chips light the pin.
+const pinFor: Record<string, string> = { Delhi: 'delhi', Ladakh: 'leh-ladakh' };
+const groups = order.filter((id) => id !== 'india').map((id) => ({ id, label: data.groups.find((g) => g.id === id)!.label, items: places.filter((p) => p.group === id) }));
 const slug = (s: string) => s.toLowerCase().replace(/[^a-z]+/g, '-');
 ---
 
 <div data-travel>
   <svg viewBox={`0 0 ${W} ${H}`} class="h-auto w-full" role="img"
-    aria-label={`Map from Europe to Southeast Asia. Routes from Ahmedabad to ${cities} places across ${countries} countries and regions.`}>
+    aria-label={`Map from Europe to Southeast Asia. Routes from Ahmedabad to Delhi and Ladakh in India and to ${cities} cities across ${countries} other countries and regions. ${states} Indian states and ${uts} union territories visited.`}>
     <path d={dots} class="land" />
     {places.map((p) => <path d={arc(home, p.xy)} class="route" data-group={p.group} pathLength="1" />)}
     <circle cx={home[0]} cy={home[1]} r="6" class="home" />
@@ -61,12 +67,25 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z]+/g, '-');
   </svg>
 
   <p class="mt-4 text-sm text-muted">
-    <span class="display text-3xl text-ink" data-count data-to={cities}>{cities}</span> cities,
-    <span class="display text-3xl text-ink" data-count data-to={countries}>{countries}</span> countries and regions so far. Routes start from Ahmedabad.
+    <span class="display text-3xl text-ink" data-count data-to={states + uts}>{states + uts}</span> Indian states and union territories, and
+    <span class="display text-3xl text-ink" data-count data-to={cities}>{cities}</span> cities in
+    <span class="display text-3xl text-ink" data-count data-to={countries}>{countries}</span> other countries and regions. Routes start from Ahmedabad.
   </p>
-  {/* TODO(aseem): list the other Indian states and cities you have visited in src/content/places.json. */}
 
-  <div class="mt-6 grid gap-5 sm:grid-cols-3">
+  <div class="mt-6">
+    <h4 class="eyebrow mb-2">India · {states} states</h4>
+    <ul class="flex flex-wrap gap-2">
+      {data.indiaStates.map((s) => <li><span class="chip">{s}</span></li>)}
+    </ul>
+    <h4 class="eyebrow mb-2 mt-5">India · {uts} union territories</h4>
+    <ul class="flex flex-wrap gap-2">
+      {data.indiaUTs.map((s) => (
+        <li>{pinFor[s] ? <button type="button" class="chip" data-chip={pinFor[s]}>{s}</button> : <span class="chip">{s}</span>}</li>
+      ))}
+    </ul>
+  </div>
+
+  <div class="mt-7 grid gap-5 sm:grid-cols-2">
     {groups.map((g) => (
       <div>
         <h4 class="eyebrow mb-2">{g.label}</h4>
@@ -87,6 +106,6 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z]+/g, '-');
   .halo { fill: var(--accent-ink); opacity: 0; transition: opacity 200ms; }
   .spot { fill: var(--accent-ink); stroke: var(--surface-2); stroke-width: 1.4; }
   .pin.is-hot .halo { opacity: 0.28; }
-  .chip { font-size: 0.82rem; padding: 0.3rem 0.7rem; border-radius: 999px; border: 1px solid var(--line); background: var(--card); transition: border-color 160ms, background 160ms; }
+  .chip { display: inline-block; line-height: 1.5; font-size: 0.82rem; padding: 0.3rem 0.7rem; border-radius: 999px; border: 1px solid var(--line); background: var(--card); transition: border-color 160ms, background 160ms; }
   .chip:hover, .chip:focus-visible { border-color: var(--accent); }
 </style>
